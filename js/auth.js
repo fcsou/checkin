@@ -14,14 +14,14 @@ export const FederatedIdentityEngine = {
       }).join(''));
       return JSON.parse(jsonPayloadString);
     } catch (e) {
-      throw new Error("Identity mapping authorization assertions configuration parse exception token structure corrupted error trace.");
+      throw new Error("Mã xác thực không hợp lệ.");
     }
   },
 
   initializeGoogleIdentityButton(containerElementId, authenticationCallbackSuccessHandler) {
     // Dynamic initialization of structural system credentials elements anchors parameters layer tracking module vectors
     if (typeof google === 'undefined' || !google.accounts) {
-      console.error("Identity framework dependencies core scripts objects elements not available on scope initialization context routing execution.");
+      console.error("Không tải được thư viện đăng nhập Google.");
       return;
     }
 
@@ -33,7 +33,7 @@ export const FederatedIdentityEngine = {
           StorageEngine.set('identity_profile_cached_payload', claimsPayload);
           authenticationCallbackSuccessHandler(claimsPayload);
         } catch (error) {
-          console.error("Identity verification layer encountered an extraction failure logic mismatch path tracking routine error sequence.", error);
+          console.error("Không thể giải mã thông tin đăng nhập.", error);
         }
       }
     });

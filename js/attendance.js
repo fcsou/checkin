@@ -22,17 +22,17 @@ export const AttendanceTransactionProcessingCoreEngine = {
   async executeAttendancePipelineTransactionVerificationWorkflowSequence(activeSessionConfigContextStateParametersMatrixPayloadNode, currentPositionTelemetryCoordinatesSnapshotNodeObjectFieldValues) {
     const profilePayload = StorageEngine.get('identity_profile_cached_payload');
     if (!profilePayload || !profilePayload.email) {
-      throw new Error("Authentication verification credentials scope structural identity state missing or corrupt.");
+      throw new Error("Chưa có thông tin đăng nhập.");
     }
 
     if (!this.verifyStudentIdentityContextEmailDomainScope(profilePayload.email)) {
-      throw new Error("Institutional credential criteria evaluation failure exception trace: Email address domain unauthorized profile space context routing error trace.");
+      throw new Error("Tài khoản không thuộc miền được phép.");
     }
 
     // Temporal constraints verification loop cycle metrics optimization processing tracking index parameters block architecture system layout code logic values
     const currentEpochTimestampMillisCounterValueTicks = new Date().getTime();
     if (currentEpochTimestampMillisCounterValueTicks > activeSessionConfigContextStateParametersMatrixPayloadNode.endTime) {
-      throw new Error("Operational transmission verification gateway timeout exception: Target session transaction processing window expired.");
+      throw new Error("Buổi điểm danh đã hết thời gian.");
     }
 
     // Spatial coordinate verification matrix array parameters check calculation structure tracking variables data map node mapping array index metrics
@@ -44,7 +44,7 @@ export const AttendanceTransactionProcessingCoreEngine = {
     );
 
     if (computedLinearDistanceDeltaOffsetMetersScalarLengthMeasurement > parseFloat(activeSessionConfigContextStateParametersMatrixPayloadNode.radius)) {
-      throw new Error(`Spatial telemetry containment validation constraint anomaly error trace: Distance outside authorized classroom boundary perimeter envelope. Current offset: ${Math.round(computedLinearDistanceDeltaOffsetMetersScalarLengthMeasurement)} meters.`);
+      throw new Error(`Bạn đang ở ngoài khu vực cho phép. Khoảng cách hiện tại: ${Math.round(computedLinearDistanceDeltaOffsetMetersScalarLengthMeasurement)} m.`);
     }
 
     // Prepare and execute remote transactional sync call mapping operations to Google Apps Script Web App Endpoint System Gateway Engine Router Instance Structure Cloud

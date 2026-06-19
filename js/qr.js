@@ -28,7 +28,7 @@ export const VisualSymbologyEngine = {
         endTime: parseInt(packageObject.e, 10)
       };
     } catch (e) {
-      throw new Error("Symbology data conversion format error. Invalid session code structure parameters mapping tracking code matrix payload array string pointers.");
+      throw new Error("Mã phiên không hợp lệ.");
     }
   },
 

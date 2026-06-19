@@ -53,13 +53,13 @@ function initializeStudentAppPortalWorkflowEngineSystemRoutineSequence() {
     qrReaderScanSuccessExecutionCallbackHandler,
     (errorMessageTrackLineStringLabelKey) => { /* Silently consume polling stream tracking logs frame anomalies to minimize interface garbage cycles output collections */ }
   ).catch(err => {
-    UserInterfaceCoreEngine.showToastNotification("Hardware optical device video stream tracking source failed to attach. Use the manual fallback parameter string key option input gateway card form block layout panel field field.", 'warning');
+    UserInterfaceCoreEngine.showToastNotification("Không mở được camera. Hãy nhập mã phiên thủ công.", 'warning');
   });
 
   document.getElementById('submitManualSessionCodeBtn').addEventListener('click', () => {
     const rawInputValueStringPayload = document.getElementById('manualSessionUrlIdInput').value.trim();
     if (!rawInputValueStringPayload) {
-      UserInterfaceCoreEngine.showToastNotification("Target parameter string code value pointer can not be empty.", 'warning');
+      UserInterfaceCoreEngine.showToastNotification("Vui lòng nhập mã phiên.", 'warning');
       return;
     }
     try {
@@ -79,7 +79,7 @@ function processTargetSessionBindingActionSequenceTrigger(validatedSessionConfig
     RuntimeApplicationContextStateMemoryEngineMatrixContainerObjectArrayNodeStoreInstance.activeCameraStreamReaderScannerHardwareModuleProxyInstanceEngineNodeObject.stop().catch(e => console.log(e));
   }
 
-  document.getElementById('targetSessionEchoTitle').textContent = `Subject Target Anchor: ${validatedSessionConfigPayloadStructureDataNodeObject.name} (${validatedSessionConfigPayloadStructureDataNodeObject.id})`;
+  document.getElementById('targetSessionEchoTitle').textContent = `Buổi học: ${validatedSessionConfigPayloadStructureDataNodeObject.name} (${validatedSessionConfigPayloadStructureDataNodeObject.id})`;
   UserInterfaceCoreEngine.switchMobileFlowActiveStepViewportCard('stepAuth');
 
   // Verify Identity Profile Cache or Render Sign-In Interface Components Interface Elements
@@ -88,7 +88,7 @@ function processTargetSessionBindingActionSequenceTrigger(validatedSessionConfig
     proceedToSpatialTelemetryVerificationFlowSequenceStep();
   } else {
     FederatedIdentityEngine.initializeGoogleIdentityButton('googleIdentityButtonWrapper', (claimsResponsePayloadObjectDataArrayNodeValueReferencePointer) => {
-      UserInterfaceCoreEngine.showToastNotification(`Authentication verified: ${claimsResponsePayloadObjectDataArrayNodeValueReferencePointer.email}`, 'success');
+      UserInterfaceCoreEngine.showToastNotification(`Đã xác minh: ${claimsResponsePayloadObjectDataArrayNodeValueReferencePointer.email}`, 'success');
       proceedToSpatialTelemetryVerificationFlowSequenceStep();
     });
   }
@@ -110,22 +110,22 @@ function proceedToSpatialTelemetryVerificationFlowSequenceStep() {
         targetSession.lng
       );
 
-      document.getElementById('gpsDistanceDisplayMeterValue').textContent = `${Math.round(absoluteLinearDistanceDeltaOffsetMetersScalarLengthValueMeasureValue)} meters`;
-      document.getElementById('gpsAccuracyDisplayValue').textContent = `± ${Math.round(locationCoordsSnapshot.accuracy)}m`;
+      document.getElementById('gpsDistanceDisplayMeterValue').textContent = `${Math.round(absoluteLinearDistanceDeltaOffsetMetersScalarLengthValueMeasureValue)} m`;
+      document.getElementById('gpsAccuracyDisplayValue').textContent = `± ${Math.round(locationCoordsSnapshot.accuracy)} m`;
 
       const statusBadge = document.getElementById('gpsStatusBadgeIndicator');
       if (absoluteLinearDistanceDeltaOffsetMetersScalarLengthValueMeasureValue <= targetSession.radius) {
-        statusBadge.textContent = "Authorized Location Validated";
+        statusBadge.textContent = "Đúng vị trí";
         statusBadge.className = "badge badge-success";
         actionTriggerBtn.removeAttribute('disabled');
       } else {
-        statusBadge.textContent = "Outside Boundary Limits Enclosures";
+        statusBadge.textContent = "Ngoài khu vực";
         statusBadge.className = "badge badge-danger";
         actionTriggerBtn.setAttribute('disabled', 'true');
       }
       return locationCoordsSnapshot;
     } catch (err) {
-      document.getElementById('gpsDistanceDisplayMeterValue').textContent = "Telemetry Error";
+      document.getElementById('gpsDistanceDisplayMeterValue').textContent = "Lỗi vị trí";
       UserInterfaceCoreEngine.showToastNotification(err.message, 'error');
       return null;
     }
@@ -136,7 +136,7 @@ function proceedToSpatialTelemetryVerificationFlowSequenceStep() {
 
   actionTriggerBtn.addEventListener('click', async () => {
     actionTriggerBtn.setAttribute('disabled', 'true');
-    actionTriggerBtn.textContent = "Synchronizing Ledger Records Matrix Transactions Log Activity Streams Data Pipeline System Execution...";
+    actionTriggerBtn.textContent = "Đang gửi điểm danh...";
     
     try {
       const currentCoords = await SpatialTelemetryEngine.getCurrentLocationCoordinates();
@@ -152,11 +152,11 @@ function proceedToSpatialTelemetryVerificationFlowSequenceStep() {
       document.getElementById('receiptTimestampOutputNode').textContent = txResponseResult.time;
       
       UserInterfaceCoreEngine.switchMobileFlowActiveStepViewportCard('stepSuccess');
-      UserInterfaceCoreEngine.showToastNotification("Attendance record synchronized successfully.", 'success');
+      UserInterfaceCoreEngine.showToastNotification("Đã gửi điểm danh thành công.", 'success');
     } catch (error) {
       UserInterfaceCoreEngine.showToastNotification(error.message, 'error');
       actionTriggerBtn.removeAttribute('disabled');
-      actionTriggerBtn.textContent = "Commit Authentication Entry Log";
+      actionTriggerBtn.textContent = "Điểm danh";
     }
   });
 }
@@ -185,7 +185,7 @@ function initializeTeacherDashboardManagementConsoleAppEngineSystemRoutineSequen
     StorageEngine.set('apps_script_url', url);
     StorageEngine.set('spreadsheet_id', sheetId);
     
-    UserInterfaceCoreEngine.showToastNotification("System network environment parameters configuration vectors synchronized.", 'success');
+    UserInterfaceCoreEngine.showToastNotification("Đã lưu cài đặt.", 'success');
     document.getElementById('configurationPipelinePanelBlockWrapper').classList.add('hidden');
     refreshDashboardAnalyticalMetricsSummaryCountersDisplayNodeValues();
   });
@@ -193,13 +193,13 @@ function initializeTeacherDashboardManagementConsoleAppEngineSystemRoutineSequen
   // Trigger Actions Modals Overlay Views Launch State Elements Interfaces Controllers Handlers Setup Linkage
   document.getElementById('triggerSessionCreationModalLaunchBtn').addEventListener('click', () => {
     const url = StorageEngine.get('apps_script_url');
-    if(!url) { UserInterfaceCoreEngine.showToastNotification("Configure target infrastructure endpoints before generating sessions.", 'warning'); return; }
+    if(!url) { UserInterfaceCoreEngine.showToastNotification("Vui lòng lưu URL Apps Script trước.", 'warning'); return; }
     document.getElementById('sessionCreationFormDialogModalWindowOverlayFrameContainer').classList.remove('hidden');
   });
 
   document.getElementById('triggerBulkRosterExcelUploadModalLaunchBtn').addEventListener('click', () => {
     const url = StorageEngine.get('apps_script_url');
-    if(!url) { UserInterfaceCoreEngine.showToastNotification("Configure target infrastructure endpoints before importing data models.", 'warning'); return; }
+    if(!url) { UserInterfaceCoreEngine.showToastNotification("Vui lòng lưu URL Apps Script trước.", 'warning'); return; }
     document.getElementById('rosterSpreadsheetImportProcessingEngineDialogModalWindowOverlayFrameContainer').classList.remove('hidden');
   });
 
@@ -230,13 +230,13 @@ function initializeTeacherDashboardManagementConsoleAppEngineSystemRoutineSequen
         }).filter(item => item.mssv !== '' && item.hoten !== '');
 
         if(parsedStudentsRosterArrayBufferCacheMemoryNodeItems.length === 0) {
-          throw new Error("No structured data matching 'MSSV' and 'HoTen' parameters could be extracted from the file sheet matrix.");
+          throw new Error("Không tìm thấy cột MSSV và HoTen trong file.");
         }
 
-        document.getElementById('summaryDataNodeParsedStudentsCountOutputMetricTextLabelValue').textContent = `${parsedStudentsRosterArrayBufferCacheMemoryNodeItems.length} records processed from sheet matrix data layout pipelines analysis structures.`;
+        document.getElementById('summaryDataNodeParsedStudentsCountOutputMetricTextLabelValue').textContent = `${parsedStudentsRosterArrayBufferCacheMemoryNodeItems.length} bản ghi`;
         document.getElementById('spreadsheetParsingPreviewDataSummaryMatrixBlockBoxContainer').classList.remove('hidden');
         document.getElementById('commitParsedRosterDataToRemoteStorageCloudDatabaseEndpointActionBtn').removeAttribute('disabled');
-        UserInterfaceCoreEngine.showToastNotification("Spreadsheet parsing complete.", 'success');
+        UserInterfaceCoreEngine.showToastNotification("Đã đọc xong file Excel.", 'success');
       } catch (err) {
         UserInterfaceCoreEngine.showToastNotification(err.message, 'error');
         fileInputNodePicker.value = "";
@@ -248,18 +248,18 @@ function initializeTeacherDashboardManagementConsoleAppEngineSystemRoutineSequen
   document.getElementById('commitParsedRosterDataToRemoteStorageCloudDatabaseEndpointActionBtn').addEventListener('click', async () => {
     const commitBtn = document.getElementById('commitParsedRosterDataToRemoteStorageCloudDatabaseEndpointActionBtn');
     commitBtn.setAttribute('disabled', 'true');
-    commitBtn.textContent = "Writing payload arrays directly into spreadsheet records pipeline system structural core nodes...";
+    commitBtn.textContent = "Đang lưu danh sách...";
     
     try {
       await ApiGateway.executeRequest('importStudents', { students: parsedStudentsRosterArrayBufferCacheMemoryNodeItems });
-      UserInterfaceCoreEngine.showToastNotification("Roster database synchronized with global drive master layer sheets.", 'success');
+      UserInterfaceCoreEngine.showToastNotification("Đã lưu danh sách lên hệ thống.", 'success');
       document.getElementById('rosterSpreadsheetImportProcessingEngineDialogModalWindowOverlayFrameContainer').classList.add('hidden');
       refreshDashboardAnalyticalMetricsSummaryCountersDisplayNodeValues();
     } catch (error) {
       UserInterfaceCoreEngine.showToastNotification(error.message, 'error');
     } finally {
       commitBtn.removeAttribute('disabled');
-      commitBtn.textContent = "Commit Roster To Cloud Architecture Infrastructure Database Storage Cluster Data Center Node Endpoint Gateway Instance Network Array System";
+      commitBtn.textContent = "Lưu danh sách";
     }
   });
 
@@ -330,7 +330,7 @@ function launchClassroomBroadcastTerminalProjectionInterfaceViewMonitor(sessionC
   broadcastOverlay.classList.remove('hidden');
 
   document.getElementById('broadcastTargetSubjectCourseLabelTitleHeaderStringNodeText').textContent = sessionConfigObjectPayloadDataNodeReferenceItem.name.split('-')[0].trim();
-  document.getElementById('broadcastTargetSessionSequenceIdentifierSubheadingIndexLabelStringNodeText').textContent = `Active Transaction Tracking Target Session Vector Key Node Token Hash Pointer Code Array ID: ${sessionConfigObjectPayloadDataNodeReferenceItem.id}`;
+  document.getElementById('broadcastTargetSessionSequenceIdentifierSubheadingIndexLabelStringNodeText').textContent = `Mã phiên: ${sessionConfigObjectPayloadDataNodeReferenceItem.id}`;
 
   // Encapsulate structural compressed transport tokens data schema vectors parameters string values network blocks format strings matrix payload system configurations values
   const payloadBase64TransportCompressedStringField = VisualSymbologyEngine.generateSessionPayloadString({
@@ -351,7 +351,7 @@ function launchClassroomBroadcastTerminalProjectionInterfaceViewMonitor(sessionC
       clearInterval(countdownIntervalTimerTickEngineProcessLoopThread);
       document.getElementById('broadcastSessionCountdownClockTimerDisplayContainerTextValueNode').textContent = "00:00";
       document.getElementById('broadcastSessionCountdownClockTimerDisplayContainerTextValueNode').style.color = "var(--danger)";
-      UserInterfaceCoreEngine.showToastNotification("The active session lifespan validation countdown interval reached the deadline perimeter. Operational window expired.", 'warning');
+      UserInterfaceCoreEngine.showToastNotification("Buổi học đã kết thúc.", 'warning');
     } else {
       const minutesCountValue = Math.floor((remainingTimeDeltaTicksValue % (1000 * 60 * 60)) / (1000 * 60));
       const secondsCountValue = Math.floor((remainingTimeDeltaTicksValue % (1000 * 60)) / 1000);

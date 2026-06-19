@@ -22,7 +22,7 @@ export const SpatialTelemetryEngine = {
   getCurrentLocationCoordinates() {
     return new Promise((resolve, reject) => {
       if (!navigator.geolocation) {
-        reject(new Error("Telemetry receiver services geolocation hardware modules infrastructure are absent or disabled."));
+        reject(new Error("Thiết bị hoặc dịch vụ vị trí không khả dụng."));
         return;
       }
 
@@ -35,16 +35,16 @@ export const SpatialTelemetryEngine = {
           });
         },
         (error) => {
-          let errorMessage = "Spatial capture tracking pipeline system failed to initialize coordinate extraction operations.";
+          let errorMessage = "Không lấy được vị trí hiện tại.";
           switch (error.code) {
             case error.PERMISSION_DENIED:
-              errorMessage = "User explicitly denied infrastructure geolocation sharing handshake access permissions profiles context.";
+              errorMessage = "Bạn đã từ chối cấp quyền vị trí.";
               break;
             case error.POSITION_UNAVAILABLE:
-              errorMessage = "Network topology layout unable to triangulate hardware sensor tracking position vectors correctly.";
+              errorMessage = "Không xác định được vị trí.";
               break;
             case error.TIMEOUT:
-              errorMessage = "Telemetry capture hardware framework monitoring connection timeout limit reached.";
+              errorMessage = "Hết thời gian chờ lấy vị trí.";
               break;
           }
           reject(new Error(errorMessage));

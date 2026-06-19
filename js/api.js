@@ -10,7 +10,7 @@ export const ApiGateway = {
     const spreadsheetId = StorageEngine.get('spreadsheet_id');
 
     if (!appsScriptUrl && action !== 'verifyEndpointsTest') {
-      throw new Error("Target core connectivity network pipeline system interface pointers are missing or uninitialized.");
+      throw new Error("Chưa cấu hình URL Apps Script.");
     }
 
     const targetUrl = appsScriptUrl;
@@ -28,11 +28,11 @@ export const ApiGateway = {
         body: JSON.stringify(requestPacket)
       });
 
-      if (!response.ok) throw new Error(`HTTP Error Status Exception Signal Pipeline Code Variant Interfaced: ${response.status}`);
+      if (!response.ok) throw new Error(`Lỗi HTTP ${response.status}`);
       
       const jsonResponse = await response.json();
       if (jsonResponse.status === 'error' || jsonResponse.status === 'rejected') {
-        throw new Error(jsonResponse.message || "Spreadsheet operations cloud database cluster engine returned a fatal execution logic anomaly.");
+        throw new Error(jsonResponse.message || "Hệ thống trả về lỗi không xác định.");
       }
 
       return jsonResponse;

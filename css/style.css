@@ -1,19 +1,19 @@
 /* Custom CSS Variables for Theme Configuration */
 :root {
-    --primary: #2563EB;
-    --primary-hover: #1D4ED8;
-    --success: #10B981;
-    --warning: #F59E0B;
-    --danger: #EF4444;
-    --bg-app: #F8FAFC;
+    --primary: #1D4ED8;
+    --primary-hover: #1E40AF;
+    --success: #059669;
+    --warning: #D97706;
+    --danger: #DC2626;
+    --bg-app: #F5F7FB;
     --bg-card: #FFFFFF;
-    --text-main: #0F172A;
-    --text-muted: #64748B;
-    --border-color: #E2E8F0;
-    --shadow-subtle: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
-    --font-stack: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-    --radius-card: 16px;
-    --radius-control: 8px;
+    --text-main: #111827;
+    --text-muted: #6B7280;
+    --border-color: #E5E7EB;
+    --shadow-subtle: 0 1px 2px rgba(15, 23, 42, 0.06);
+    --font-stack: 'Be Vietnam Pro', -apple-system, BlinkMacSystemFont, sans-serif;
+    --radius-card: 14px;
+    --radius-control: 10px;
     --transition-smooth: all 0.2s ease-in-out;
 }
 
@@ -52,7 +52,7 @@ body {
     font-family: var(--font-stack);
     background-color: var(--bg-app);
     color: var(--text-main);
-    line-height: 1.5;
+    line-height: 1.55;
     transition: var(--transition-smooth);
     -webkit-font-smoothing: antialiased;
 }
@@ -87,7 +87,7 @@ p { font-size: 1rem; }
     border: 1px solid var(--border-color);
     border-radius: var(--radius-card);
     padding: 1.5rem;
-    shadow: var(--shadow-subtle);
+    box-shadow: var(--shadow-subtle);
     margin-bottom: 1.5rem;
 }
 
@@ -157,10 +157,10 @@ label {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1rem 2rem;
+    padding: 0.875rem 1.25rem;
     background-color: var(--bg-card);
     border-bottom: 1px solid var(--border-color);
-    height: 64px;
+    min-height: 64px;
 }
 .navbar-brand { font-weight: 700; font-size: 1.125rem; letter-spacing: -0.02em; }
 .navbar-actions-group { display: flex; gap: 0.75rem; }
@@ -200,8 +200,8 @@ label {
     border-radius: var(--radius-card);
     width: 100%;
     max-width: 600px;
-    padding: 2rem;
-    box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04);
+    padding: 1.5rem;
+    box-shadow: 0 16px 40px rgba(15, 23, 42, 0.08);
     position: relative;
     max-height: 90vh;
     overflow-y: auto;
@@ -332,7 +332,7 @@ label {
     background-color: var(--bg-app);
     transition: var(--transition-smooth);
 }
-.matrix-btn-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-subtle); border-color: var(--primary); }
+.matrix-btn-card:hover { transform: translateY(-1px); box-shadow: var(--shadow-subtle); border-color: var(--primary); }
 .matrix-btn-card .icon { font-size: 2.25rem; line-height: 1; }
 .matrix-btn-card .text-group h3 { margin-bottom: 0.15rem; font-size: 1.125rem; }
 .matrix-btn-card .text-group p { font-size: 0.875rem; color: var(--text-muted); }

@@ -1,73 +1,73 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student Authentication Checkin Workspace Matrix</title>
+    <title>Điểm danh sinh viên</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
-    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <script src="https://accounts.google.com/gsi/client?hl=vi" async defer></script>
     <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
 </head>
 <body>
     <main class="container mobile-container">
         <section id="stepScan" class="card flow-step-card current-step">
-            <h2>Scan Classroom QR Anchor Matrix</h2>
-            <p class="text-muted">Align terminal digital vision parameters directly to the physical whiteboard tracking screen.</p>
+            <h2>Quét mã QR lớp học</h2>
+            <p class="text-muted">Đưa camera vào mã QR để bắt đầu điểm danh.</p>
             <div id="qrReaderCameraStream" class="camera-stream-wrapper"></div>
             <div class="fallback-input-field">
-                <label for="manualSessionUrlIdInput">Or Paste Session Connection Hash Vector Code Pointer:</label>
-                <input type="text" id="manualSessionUrlIdInput" class="form-control" placeholder="Session Key Identifier Hash Code Parameter Array">
-                <button id="submitManualSessionCodeBtn" class="btn btn-primary w-100 mt-2">Bind Processing Target Session Vector</button>
+                <label for="manualSessionUrlIdInput">Hoặc nhập mã phiên:</label>
+                <input type="text" id="manualSessionUrlIdInput" class="form-control" placeholder="Dán mã phiên tại đây">
+                <button id="submitManualSessionCodeBtn" class="btn btn-primary w-100 mt-2">Xác nhận mã phiên</button>
             </div>
         </section>
 
         <section id="stepAuth" class="card flow-step-card hidden">
-            <h2>Verify Domain Identity Vector</h2>
-            <p id="targetSessionEchoTitle" class="session-display-banner">Target Course Anchor: Fetching data parameters...</p>
-            <p class="text-muted">University security directives enforce mandatory institutional structural validation processes.</p>
+            <h2>Xác minh danh tính</h2>
+            <p id="targetSessionEchoTitle" class="session-display-banner">Đang tải thông tin buổi học...</p>
+            <p class="text-muted">Đăng nhập bằng tài khoản trường để tiếp tục.</p>
             <div class="auth-action-box">
                 <div id="googleIdentityButtonWrapper"></div>
             </div>
         </section>
 
         <section id="stepGps" class="card flow-step-card hidden">
-            <h2>Validating Classroom Telemetry Spatial Proximity</h2>
-            <p class="text-muted">The system will cross-reference your structural node geolocation coordinates against the active session tracking anchor.</p>
+            <h2>Kiểm tra vị trí</h2>
+            <p class="text-muted">Hệ thống sẽ đối chiếu vị trí của bạn với lớp học hiện tại.</p>
             
             <div class="telemetry-status-display">
                 <div class="telemetry-row">
-                    <span>Proximity Delta Offset:</span>
-                    <strong id="gpsDistanceDisplayMeterValue">Validating...</strong>
+                    <span>Khoảng cách:</span>
+                    <strong id="gpsDistanceDisplayMeterValue">Đang kiểm tra...</strong>
                 </div>
                 <div class="telemetry-row">
-                    <span>Receiver Precision Radius:</span>
-                    <strong id="gpsAccuracyDisplayValue">Processing parameters...</strong>
+                    <span>Độ chính xác:</span>
+                    <strong id="gpsAccuracyDisplayValue">Đang xử lý...</strong>
                 </div>
                 <div class="telemetry-row">
-                    <span>Status Engine Logic:</span>
-                    <span id="gpsStatusBadgeIndicator" class="badge badge-warning">Analyzing Spatial Context</span>
+                    <span>Trạng thái:</span>
+                    <span id="gpsStatusBadgeIndicator" class="badge badge-warning">Đang phân tích</span>
                 </div>
             </div>
 
             <button id="triggerAttendanceExecutionActionBtn" class="btn btn-success w-100 btn-lg long-press-btn" disabled>
-                Commit Authentication Entry Log
+                Điểm danh
             </button>
         </section>
 
         <section id="stepSuccess" class="card flow-step-card hidden transactional-success-layout">
             <div class="success-checkmark-vector-animation">✅</div>
-            <h2 class="text-success">Attendance Logged Successfully</h2>
-            <p class="success-subheading text-muted">Your entry has been securely saved to the database.</p>
+            <h2 class="text-success">Đã điểm danh</h2>
+            <p class="success-subheading text-muted">Thông tin của bạn đã được lưu.</p>
             
             <div class="receipt-card-layout-box">
-                <div class="receipt-line"><span>Academic Profile Identity Code:</span><strong id="receiptMssvOutputNode">0000000000</strong></div>
-                <div class="receipt-line"><span>Target Subject System:</span><strong id="receiptCourseOutputNode">N/A</strong></div>
-                <div class="receipt-line"><span>Transaction Log Reference:</span><strong id="receiptTimestampOutputNode">00:00</strong></div>
+                <div class="receipt-line"><span>MSSV:</span><strong id="receiptMssvOutputNode">0000000000</strong></div>
+                <div class="receipt-line"><span>Môn học:</span><strong id="receiptCourseOutputNode">N/A</strong></div>
+                <div class="receipt-line"><span>Thời gian:</span><strong id="receiptTimestampOutputNode">00:00</strong></div>
             </div>
-            <button onclick="window.location.reload()" class="btn btn-secondary w-100 mt-4">Return To Main System Engine Routing Grid</button>
+            <button onclick="window.location.reload()" class="btn btn-secondary w-100 mt-4">Về màn hình đầu</button>
         </section>
     </main>
 
