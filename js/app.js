@@ -4,9 +4,7 @@
 
 import { StorageEngine } from './storage.js';
 import { ApiGateway } from './api.js';
-import { SpatialTelemetryEngine } from './gps.js';
 import { VisualSymbologyEngine } from './qr.js';
-import { FederatedIdentityEngine } from './auth.js';
 import { UserInterfaceCoreEngine } from './ui.js';
 import { AttendanceTransactionProcessingCoreEngine } from './attendance.js';
 
@@ -83,123 +81,35 @@ function processTargetSessionBindingActionSequenceTrigger(validatedSessionConfig
 
   const sessionModeLabel = String(validatedSessionConfigPayloadStructureDataNodeObject.mode || 'offline') === 'online' ? 'Online' : 'Trực tiếp';
   document.getElementById('targetSessionEchoTitle').textContent = `Buổi học ${sessionModeLabel}: ${validatedSessionConfigPayloadStructureDataNodeObject.name} (${validatedSessionConfigPayloadStructureDataNodeObject.id})`;
-  UserInterfaceCoreEngine.switchMobileFlowActiveStepViewportCard('stepAuth');
-
-  // Verify Identity Profile Cache or Render Sign-In Interface Components Interface Elements
-  const cachedIdentityProfile = StorageEngine.get('identity_profile_cached_payload');
-  if (cachedIdentityProfile && AttendanceTransactionProcessingCoreEngine.verifyStudentIdentityContextEmailDomainScope(cachedIdentityProfile.email)) {
-    proceedToAttendanceSubmissionFlowSequenceStep();
-  } else {
-    FederatedIdentityEngine.initializeGoogleIdentityButton('googleIdentityButtonWrapper', (claimsResponsePayloadObjectDataArrayNodeValueReferencePointer) => {
-      UserInterfaceCoreEngine.showToastNotification(`Đã xác minh: ${claimsResponsePayloadObjectDataArrayNodeValueReferencePointer.email}`, 'success');
-      proceedToAttendanceSubmissionFlowSequenceStep();
-    });
-  }
-}
-
-function proceedToAttendanceSubmissionFlowSequenceStep() {
-  const targetSession = RuntimeApplicationContextStateMemoryEngineMatrixContainerObjectArrayNodeStoreInstance.activeSessionConfigurationParametersPayloadMappingDataNodeObject;
-  const isOnlineSession = String(targetSession.mode || 'offline') === 'online';
+  UserInterfaceCoreEngine.switchMobileFlowActiveStepViewportCard('stepGps');
   const actionTriggerBtn = document.getElementById('triggerAttendanceExecutionActionBtn');
-  const gpsRequirementNoteNode = document.getElementById('gpsRequirementNoteNode');
-  const gpsTelemetryPanelNode = document.getElementById('gpsTelemetryPanelNode');
+  const studentMssvInputNode = document.getElementById('studentMssvInputNode');
   const stepGpsTitleNode = document.querySelector('#stepGps h2');
 
-  UserInterfaceCoreEngine.switchMobileFlowActiveStepViewportCard('stepGps');
-
   if (stepGpsTitleNode) {
-    stepGpsTitleNode.textContent = isOnlineSession ? 'Xác nhận điểm danh' : 'Kiểm tra vị trí';
+    stepGpsTitleNode.textContent = 'Nhập MSSV';
   }
 
-  if (gpsRequirementNoteNode) {
-    gpsRequirementNoteNode.textContent = isOnlineSession
-      ? 'Buổi học online, không cần xác minh vị trí.'
-      : 'Hệ thống sẽ đối chiếu vị trí của bạn với lớp học hiện tại.';
+  if (studentMssvInputNode) {
+    studentMssvInputNode.addEventListener('input', () => {
+      actionTriggerBtn.disabled = studentMssvInputNode.value.trim().length === 0;
+    });
   }
 
-  if (gpsTelemetryPanelNode) {
-    gpsTelemetryPanelNode.classList.toggle('hidden', isOnlineSession);
-  }
-
-  if (isOnlineSession) {
-    actionTriggerBtn.removeAttribute('disabled');
-    actionTriggerBtn.textContent = 'Điểm danh';
-  }
-  
-  if (isOnlineSession) {
-    actionTriggerBtn.onclick = async () => {
-      actionTriggerBtn.setAttribute('disabled', 'true');
-      actionTriggerBtn.textContent = 'Đang gửi điểm danh...';
-
-      try {
-        const txResponseResult = await AttendanceTransactionProcessingCoreEngine.executeAttendancePipelineTransactionVerificationWorkflowSequence(
-          RuntimeApplicationContextStateMemoryEngineMatrixContainerObjectArrayNodeStoreInstance.activeSessionConfigurationParametersPayloadMappingDataNodeObject,
-          null
-        );
-
-        document.getElementById('receiptMssvOutputNode').textContent = txResponseResult.mssv;
-        document.getElementById('receiptCourseOutputNode').textContent = txResponseResult.sessionName;
-        document.getElementById('receiptTimestampOutputNode').textContent = txResponseResult.time;
-
-        UserInterfaceCoreEngine.switchMobileFlowActiveStepViewportCard('stepSuccess');
-        UserInterfaceCoreEngine.showToastNotification("Đã gửi điểm danh thành công.", 'success');
-      } catch (error) {
-        UserInterfaceCoreEngine.showToastNotification(error.message, 'error');
-        actionTriggerBtn.removeAttribute('disabled');
-        actionTriggerBtn.textContent = 'Điểm danh';
-      }
-    };
-    return;
-  }
-
-  const telemetryRefreshTrackingWorkerLoopTickRoutineSequenceHandler = async () => {
-    try {
-      const locationCoordsSnapshot = await SpatialTelemetryEngine.getCurrentLocationCoordinates();
-      
-      const absoluteLinearDistanceDeltaOffsetMetersScalarLengthValueMeasureValue = SpatialTelemetryEngine.calculateHaversineDistance(
-        locationCoordsSnapshot.latitude,
-        locationCoordsSnapshot.longitude,
-        targetSession.lat,
-        targetSession.lng
-      );
-
-      document.getElementById('gpsDistanceDisplayMeterValue').textContent = `${Math.round(absoluteLinearDistanceDeltaOffsetMetersScalarLengthValueMeasureValue)} m`;
-      document.getElementById('gpsAccuracyDisplayValue').textContent = `± ${Math.round(locationCoordsSnapshot.accuracy)} m`;
-
-      const statusBadge = document.getElementById('gpsStatusBadgeIndicator');
-      if (absoluteLinearDistanceDeltaOffsetMetersScalarLengthValueMeasureValue <= targetSession.radius) {
-        statusBadge.textContent = "Đúng vị trí";
-        statusBadge.className = "badge badge-success";
-        actionTriggerBtn.removeAttribute('disabled');
-      } else {
-        statusBadge.textContent = "Ngoài khu vực";
-        statusBadge.className = "badge badge-danger";
-        actionTriggerBtn.setAttribute('disabled', 'true');
-      }
-      return locationCoordsSnapshot;
-    } catch (err) {
-      document.getElementById('gpsDistanceDisplayMeterValue').textContent = "Lỗi vị trí";
-      UserInterfaceCoreEngine.showToastNotification(err.message, 'error');
-      return null;
-    }
-  };
-
-  telemetryRefreshTrackingWorkerLoopTickRoutineSequenceHandler();
-  RuntimeApplicationContextStateMemoryEngineMatrixContainerObjectArrayNodeStoreInstance.activeStudentGpsTrackingLoopRealTimeWatcherProcessThreadIdCounterValue = setInterval(telemetryRefreshTrackingWorkerLoopTickRoutineSequenceHandler, 5000);
-
-  actionTriggerBtn.onclick = null;
   actionTriggerBtn.addEventListener('click', async () => {
     actionTriggerBtn.setAttribute('disabled', 'true');
     actionTriggerBtn.textContent = "Đang gửi điểm danh...";
     
     try {
-      const currentCoords = await SpatialTelemetryEngine.getCurrentLocationCoordinates();
+      const enteredMssv = studentMssvInputNode ? studentMssvInputNode.value.trim() : '';
+      if (!enteredMssv) {
+        throw new Error('Vui lòng nhập MSSV.');
+      }
+
       const txResponseResult = await AttendanceTransactionProcessingCoreEngine.executeAttendancePipelineTransactionVerificationWorkflowSequence(
         RuntimeApplicationContextStateMemoryEngineMatrixContainerObjectArrayNodeStoreInstance.activeSessionConfigurationParametersPayloadMappingDataNodeObject,
-        currentCoords
+        enteredMssv
       );
-
-      clearInterval(RuntimeApplicationContextStateMemoryEngineMatrixContainerObjectArrayNodeStoreInstance.activeStudentGpsTrackingLoopRealTimeWatcherProcessThreadIdCounterValue);
       
       document.getElementById('receiptMssvOutputNode').textContent = txResponseResult.mssv;
       document.getElementById('receiptCourseOutputNode').textContent = txResponseResult.sessionName;
@@ -227,18 +137,6 @@ function initializeTeacherDashboardManagementConsoleAppEngineSystemRoutineSequen
   const appsScriptUrlInputNode = document.getElementById('configInputTargetAppsScriptUrlEndpointString');
   const sheetIdInputNode = document.getElementById('configInputTargetGoogleSpreadsheetIdentifierUniqueIdHashString');
   const googleClientIdInputNode = document.getElementById('configInputGoogleClientIdString');
-  const sessionModeSelectNode = document.getElementById('sessionFormInputSessionModeSelectValue');
-  const radiusFieldNode = document.getElementById('sessionFormSpatialRadiusField');
-
-  const syncTeacherSessionModeUi = () => {
-    if (!sessionModeSelectNode || !radiusFieldNode) return;
-    const isOnlineMode = sessionModeSelectNode.value === 'online';
-    radiusFieldNode.classList.toggle('hidden', isOnlineMode);
-    const radiusInputNode = document.getElementById('sessionFormInputSpatialProximityValidationRadiusThresholdMeterValueLimit');
-    if (radiusInputNode) {
-      radiusInputNode.required = !isOnlineMode;
-    }
-  };
 
   if (settingsPanel && openSettingsButton) {
     openSettingsButton.addEventListener('click', () => {
@@ -257,11 +155,6 @@ function initializeTeacherDashboardManagementConsoleAppEngineSystemRoutineSequen
 
   if (googleClientIdInputNode) {
     googleClientIdInputNode.value = StorageEngine.get('google_client_id', '');
-  }
-
-  if (sessionModeSelectNode) {
-    sessionModeSelectNode.addEventListener('change', syncTeacherSessionModeUi);
-    syncTeacherSessionModeUi();
   }
 
   const settingsForm = document.getElementById('systemConfigStorageSetupFormParametersPayloadBinder');
@@ -364,8 +257,6 @@ function initializeTeacherDashboardManagementConsoleAppEngineSystemRoutineSequen
     try {
       const courseName = document.getElementById('sessionFormInputCourseTitleStringName').value.trim();
       const sessionNum = document.getElementById('sessionFormInputSessionIdentifierIndexNumberSequenceCode').value.trim();
-      const sessionMode = sessionModeSelectNode ? sessionModeSelectNode.value : 'offline';
-      const radiusValue = document.getElementById('sessionFormInputSpatialProximityValidationRadiusThresholdMeterValueLimit').value;
       const durationMinutes = document.getElementById('sessionFormInputOperationalLifespanWindowDurationCountdownIntervalMinutesCounter').value;
       const generatedSessionUniqueUidTokenKey = `SESS_${new Date().getTime()}`;
       const epochExpirationTimestampCalculationTicks = new Date().getTime() + (parseInt(durationMinutes, 10) * 60 * 1000);
@@ -374,21 +265,16 @@ function initializeTeacherDashboardManagementConsoleAppEngineSystemRoutineSequen
       const formattedTimeStringHmsNodeValue = new Date().toTimeString().split(' ')[0];
       const formattedEndTimeStringHmsNodeValue = new Date(epochExpirationTimestampCalculationTicks).toTimeString().split(' ')[0];
 
-      let hardwareCoordsSnapshot = null;
-      if (sessionMode === 'offline') {
-        hardwareCoordsSnapshot = await SpatialTelemetryEngine.getCurrentLocationCoordinates();
-      }
-
       const sessionTransportPayloadObjectStructureInstance = {
         id: generatedSessionUniqueUidTokenKey,
         name: `${courseName} - ${sessionNum}`,
-        mode: sessionMode,
+        mode: 'manual',
         date: formattedDateStringYmdNodeValue,
         startTime: formattedTimeStringHmsNodeValue,
         endTime: formattedEndTimeStringHmsNodeValue,
-        lat: hardwareCoordsSnapshot ? hardwareCoordsSnapshot.latitude : null,
-        lng: hardwareCoordsSnapshot ? hardwareCoordsSnapshot.longitude : null,
-        radius: sessionMode === 'online' ? 0 : radiusValue
+        lat: null,
+        lng: null,
+        radius: null
       };
 
       await ApiGateway.executeRequest('createSession', { session: sessionTransportPayloadObjectStructureInstance });
