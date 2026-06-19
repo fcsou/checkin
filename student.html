@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Authentication Checkin Workspace Matrix</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+</head>
+<body>
+    <main class="container mobile-container">
+        <section id="stepScan" class="card flow-step-card current-step">
+            <h2>Scan Classroom QR Anchor Matrix</h2>
+            <p class="text-muted">Align terminal digital vision parameters directly to the physical whiteboard tracking screen.</p>
+            <div id="qrReaderCameraStream" class="camera-stream-wrapper"></div>
+            <div class="fallback-input-field">
+                <label for="manualSessionUrlIdInput">Or Paste Session Connection Hash Vector Code Pointer:</label>
+                <input type="text" id="manualSessionUrlIdInput" class="form-control" placeholder="Session Key Identifier Hash Code Parameter Array">
+                <button id="submitManualSessionCodeBtn" class="btn btn-primary w-100 mt-2">Bind Processing Target Session Vector</button>
+            </div>
+        </section>
+
+        <section id="stepAuth" class="card flow-step-card hidden">
+            <h2>Verify Domain Identity Vector</h2>
+            <p id="targetSessionEchoTitle" class="session-display-banner">Target Course Anchor: Fetching data parameters...</p>
+            <p class="text-muted">University security directives enforce mandatory institutional structural validation processes.</p>
+            <div class="auth-action-box">
+                <div id="googleIdentityButtonWrapper"></div>
+            </div>
+        </section>
+
+        <section id="stepGps" class="card flow-step-card hidden">
+            <h2>Validating Classroom Telemetry Spatial Proximity</h2>
+            <p class="text-muted">The system will cross-reference your structural node geolocation coordinates against the active session tracking anchor.</p>
+            
+            <div class="telemetry-status-display">
+                <div class="telemetry-row">
+                    <span>Proximity Delta Offset:</span>
+                    <strong id="gpsDistanceDisplayMeterValue">Validating...</strong>
+                </div>
+                <div class="telemetry-row">
+                    <span>Receiver Precision Radius:</span>
+                    <strong id="gpsAccuracyDisplayValue">Processing parameters...</strong>
+                </div>
+                <div class="telemetry-row">
+                    <span>Status Engine Logic:</span>
+                    <span id="gpsStatusBadgeIndicator" class="badge badge-warning">Analyzing Spatial Context</span>
+                </div>
+            </div>
+
+            <button id="triggerAttendanceExecutionActionBtn" class="btn btn-success w-100 btn-lg long-press-btn" disabled>
+                Commit Authentication Entry Log
+            </button>
+        </section>
+
+        <section id="stepSuccess" class="card flow-step-card hidden transactional-success-layout">
+            <div class="success-checkmark-vector-animation">✅</div>
+            <h2 class="text-success">Attendance Logged Successfully</h2>
+            <p class="success-subheading text-muted">Your entry has been securely saved to the database.</p>
+            
+            <div class="receipt-card-layout-box">
+                <div class="receipt-line"><span>Academic Profile Identity Code:</span><strong id="receiptMssvOutputNode">0000000000</strong></div>
+                <div class="receipt-line"><span>Target Subject System:</span><strong id="receiptCourseOutputNode">N/A</strong></div>
+                <div class="receipt-line"><span>Transaction Log Reference:</span><strong id="receiptTimestampOutputNode">00:00</strong></div>
+            </div>
+            <button onclick="window.location.reload()" class="btn btn-secondary w-100 mt-4">Return To Main System Engine Routing Grid</button>
+        </section>
+    </main>
+
+    <div id="toastContainer" class="toast-container" aria-live="polite"></div>
+    <script type="module" src="js/app.js"></script>
+</body>
+</html>

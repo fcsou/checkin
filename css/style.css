@@ -1,0 +1,347 @@
+/* Custom CSS Variables for Theme Configuration */
+:root {
+    --primary: #2563EB;
+    --primary-hover: #1D4ED8;
+    --success: #10B981;
+    --warning: #F59E0B;
+    --danger: #EF4444;
+    --bg-app: #F8FAFC;
+    --bg-card: #FFFFFF;
+    --text-main: #0F172A;
+    --text-muted: #64748B;
+    --border-color: #E2E8F0;
+    --shadow-subtle: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+    --font-stack: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    --radius-card: 16px;
+    --radius-control: 8px;
+    --transition-smooth: all 0.2s ease-in-out;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --bg-app: #0F172A;
+        --bg-card: #1E293B;
+        --text-main: #F8FAFC;
+        --text-muted: #94A3B8;
+        --border-color: #334155;
+        --shadow-subtle: 0 4px 6px -1px rgba(0, 0, 0, 0.5);
+    }
+}
+
+.dark-theme-override {
+    --bg-app: #0F172A;
+    --bg-card: #1E293B;
+    --text-main: #F8FAFC;
+    --text-muted: #94A3B8;
+    --border-color: #334155;
+    --shadow-subtle: 0 4px 6px -1px rgba(0, 0, 0, 0.5);
+}
+
+.light-theme-override {
+    --bg-app: #F8FAFC;
+    --bg-card: #FFFFFF;
+    --text-main: #0F172A;
+    --text-muted: #64748B;
+    --border-color: #E2E8F0;
+    --shadow-subtle: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+}
+
+/* Reset and Layout Foundations */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+    font-family: var(--font-stack);
+    background-color: var(--bg-app);
+    color: var(--text-main);
+    line-height: 1.5;
+    transition: var(--transition-smooth);
+    -webkit-font-smoothing: antialiased;
+}
+
+.container {
+    width: 100%;
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+}
+
+.mobile-container { max-width: 480px; padding: 1rem; }
+.centered-layout {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: calc(100vh - 80px);
+}
+
+/* Typography Core Design Tokens */
+h1 { font-size: 2.25rem; font-weight: 700; letter-spacing: -0.05em; }
+h2 { font-size: 1.5rem; font-weight: 600; letter-spacing: -0.03em; margin-bottom: 0.5rem; }
+h3 { font-size: 1.25rem; font-weight: 600; margin-bottom: 0.5rem; }
+p { font-size: 1rem; }
+.text-muted { color: var(--text-muted); font-size: 0.875rem; }
+.text-success { color: var(--success); }
+.text-center { text-align: center; }
+
+/* Structural Component Cards Architecture */
+.card {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-card);
+    padding: 1.5rem;
+    shadow: var(--shadow-subtle);
+    margin-bottom: 1.5rem;
+}
+
+/* Form Management Elements UI Blocks Design Layout Elements */
+.form-group { margin-bottom: 1.25rem; }
+.form-group-row {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1.25rem;
+}
+.form-field-element-block { flex: 1; min-width: 200px; }
+label {
+    display: block;
+    font-size: 0.875rem;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+    color: var(--text-main);
+}
+.form-control {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+    font-family: inherit;
+    background-color: var(--bg-app);
+    color: var(--text-main);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-control);
+    transition: var(--transition-smooth);
+}
+.form-control:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
+
+/* Universal Interface Buttons System Configuration Engine */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-family: inherit;
+    font-size: 0.9375rem;
+    font-weight: 500;
+    padding: 0.75rem 1.25rem;
+    border-radius: var(--radius-control);
+    border: 1px solid transparent;
+    cursor: pointer;
+    transition: var(--transition-smooth);
+    text-decoration: none;
+}
+.btn-primary { background-color: var(--primary); color: #FFFFFF; }
+.btn-primary:hover { background-color: var(--primary-hover); }
+.btn-secondary { background-color: var(--bg-app); color: var(--text-main); border-color: var(--border-color); }
+.btn-secondary:hover { background-color: var(--border-color); }
+.btn-success { background-color: var(--success); color: #FFFFFF; }
+.btn-danger { background-color: var(--danger); color: #FFFFFF; }
+.btn-lg { padding: 1rem 1.5rem; font-size: 1.0625rem; font-weight: 600; }
+.btn-sm { padding: 0.5rem 0.75rem; font-size: 0.8125rem; }
+.btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.w-100 { width: 100%; }
+.mt-2 { margin-top: 0.5rem; }
+.mt-3 { margin-top: 1rem; }
+.mt-4 { margin-top: 1.5rem; }
+
+/* Global Navigation Top Fixed Application Bar */
+.app-navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    background-color: var(--bg-card);
+    border-bottom: 1px solid var(--border-color);
+    height: 64px;
+}
+.navbar-brand { font-weight: 700; font-size: 1.125rem; letter-spacing: -0.02em; }
+.navbar-actions-group { display: flex; gap: 0.75rem; }
+
+/* Dashboard Architectural Grid Framework Systems */
+.metrics-grid-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+.metric-counter-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.metric-title-header { font-size: 0.8125rem; font-weight: 500; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.25rem; }
+.metric-value-data-string { font-size: 2rem; font-weight: 700; color: var(--text-main); letter-spacing: -0.02em; }
+.dashboard-operations-row-controls { display: flex; gap: 1rem; margin-bottom: 2rem; flex-wrap: wrap; }
+.dashboard-operations-row-controls .btn { flex: 1; min-width: 280px; }
+
+/* Interactive Modals Overlays Surfaces Layout Layer Matrices */
+.modal-backdrop-overlay {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-color: rgba(15, 23, 42, 0.6);
+    backdrop-filter: blur(4px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    padding: 1rem;
+}
+.modal-surface-container-card {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-card);
+    width: 100%;
+    max-width: 600px;
+    padding: 2rem;
+    box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04);
+    position: relative;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+.modal-header-container { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.5rem; }
+.close-modal-dismissal-action-trigger-btn { background: none; border: none; font-size: 1.75rem; color: var(--text-muted); cursor: pointer; transition: var(--transition-smooth); }
+.close-modal-dismissal-action-trigger-btn:hover { color: var(--text-main); }
+
+/* Master Roster File Upload Dropzone Interactive Design Layout Objects Elements Box Area System Frame Work Controls */
+.file-upload-dropzone-interactive-area-wrapper-card-surface-box-container { margin: 1.5rem 0; }
+.dropzone-visual-label-facade-action-trigger-surface-button-box-card-wrapper-frame-element {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border: 2px dashed var(--border-color);
+    border-radius: var(--radius-card);
+    padding: 3rem 1.5rem;
+    cursor: pointer;
+    background-color: var(--bg-app);
+    transition: var(--transition-smooth);
+    text-align: center;
+}
+.dropzone-visual-label-facade-action-trigger-surface-button-box-card-wrapper-frame-element:hover { border-color: var(--primary); background-color: rgba(37, 99, 235, 0.02); }
+.dropzone-icon-glyph-vector-symbol { font-size: 2.5rem; margin-bottom: 1rem; }
+.hidden-native-file-picker-element-node-input { display: none; }
+.preview-data-summary-box-card { background-color: rgba(16, 185, 129, 0.05); border: 1px solid var(--success); padding: 1rem; border-radius: var(--radius-control); }
+.summary-stat-row-line { display: flex; justify-content: space-between; font-size: 0.9375rem; margin-top: 0.25rem; }
+
+/* Real-Time Spreadsheet Data Representation Matrices Tables Interfacing Framework Layout Core Module Box Surface Area Frame System Controls Elements */
+.table-header-toolbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; flex-wrap: wrap; gap: 1rem; }
+.table-responsive-overflow-container-wrapper-box { width: 100%; overflow-x: auto; border-radius: var(--radius-control); border: 1px solid var(--border-color); }
+.data-table-element { width: 100%; border-collapse: collapse; text-align: left; font-size: 0.9375rem; }
+.data-table-element th { background-color: var(--bg-app); padding: 1rem; font-weight: 600; color: var(--text-main); border-bottom: 1px solid var(--border-color); }
+.data-table-element td { padding: 1rem; border-bottom: 1px solid var(--border-color); color: var(--text-main); white-space: nowrap; }
+.data-table-element tr:last-child td { border-bottom: none; }
+.live-activity-pulse-dot-indicator-badge { display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.8125rem; font-weight: 500; color: var(--primary); background-color: rgba(37, 99, 235, 0.08); padding: 0.25rem 0.75rem; border-radius: 50px; }
+
+/* Fullscreen Broadcast Modality Presentation Engine Panel Surface Grid Layer Matrix Framework Elements Component Box Structure */
+.broadcast-mode-fullscreen-surface-panel-wrapper-box-container-card-layout-window { padding: 0; background-color: var(--bg-app); }
+.broadcast-workspace-grid-layout-container-wrapper-box-card-surface-frame { width: 100vw; height: 100vh; display: flex; flex-direction: column; padding: 2rem; }
+.broadcast-header-toolbar { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--border-color); padding-bottom: 1.5rem; margin-bottom: 2rem; }
+.session-badge-subtitle-info-string-label { font-size: 1.25rem; color: var(--text-muted); margin-top: 0.25rem; }
+.broadcast-core-display-workspace-body-flex-row-container-wrapper-box { display: flex; flex: 1; gap: 2rem; min-height: 0; }
+.qr-code-presentation-viewport-centered-card-surface-box-wrapper-frame {
+    flex: 1.3;
+    background-color: #FFFFFF;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-card);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+    box-shadow: var(--shadow-subtle);
+}
+.qr-graphics-canvas-container-node { margin-bottom: 1.5rem; padding: 1rem; background: #FFFFFF; border-radius: var(--radius-control); }
+.qr-graphics-canvas-container-node img { max-width: 100%; height: auto; display: block; margin: 0 auto; }
+.countdown-timer-numeric-display-string-badge-clock-wrapper { font-size: 3rem; font-weight: 700; color: var(--danger); font-variant-numeric: tabular-nums; background-color: rgba(239, 68, 68, 0.05); padding: 0.5rem 2rem; border-radius: var(--radius-control); border: 1px solid rgba(239, 68, 68, 0.2); }
+.live-activity-stream-sidebar-panel-card-surface-wrapper-box { flex: 0.9; display: flex; flex-direction: column; gap: 1.5rem; min-height: 0; }
+.sidebar-counter-card { background-color: var(--primary); color: #FFFFFF; border-radius: var(--radius-card); padding: 1.5rem; display: flex; flex-direction: column; align-items: center; justify-content: center; box-shadow: var(--shadow-subtle); }
+.sidebar-counter-label { font-size: 1rem; opacity: 0.9; text-transform: uppercase; font-weight: 500; letter-spacing: 0.05em; }
+.sidebar-counter-value-string { font-size: 4rem; font-weight: 800; line-height: 1; margin-top: 0.25rem; }
+.sidebar-activity-log-scroller-box-container-wrapper-frame-element { flex: 1; background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-card); padding: 1.5rem; display: flex; flex-direction: column; min-height: 0; box-shadow: var(--shadow-subtle); }
+.sidebar-activity-log-scroller-box-container-wrapper-frame-element h4 { font-size: 1.125rem; font-weight: 600; border-bottom: 1px solid var(--border-color); padding-bottom: 0.75rem; margin-bottom: 1rem; }
+.ticker-stream-unordered-list-element-wrapper-box { list-style: none; overflow-y: auto; flex: 1; display: flex; flex-direction: column; gap: 0.75rem; padding-right: 0.25rem; }
+.ticker-stream-unordered-list-element-wrapper-box li { padding: 0.75rem 1rem; background-color: var(--bg-app); border: 1px solid var(--border-color); border-radius: var(--radius-control); display: flex; justify-content: space-between; font-weight: 500; animation: slideInEntranceNode 0.2s cubic-bezier(0.16, 1, 0.3, 1); }
+.ticker-stream-unordered-list-element-wrapper-box li span.timestamp { color: var(--success); font-size: 0.875rem; }
+
+/* Student Processing Flow Multistep UI Mechanics Switch Matrix Controllers Styles Structural Blocks Definitions Layout Core Components Structure */
+.flow-step-card { display: none; }
+.flow-step-card.current-step { display: block; animation: fadeInStepTransition 0.3s ease-out; }
+.hidden { display: none !important; }
+.camera-stream-wrapper { width: 100%; aspect-ratio: 1/1; background-color: #000000; border-radius: var(--radius-card); overflow: hidden; margin: 1.5rem 0; box-shadow: var(--shadow-subtle); border: 1px solid var(--border-color); }
+.session-display-banner { margin: 1rem 0; background-color: rgba(37, 99, 235, 0.08); border-left: 4px solid var(--primary); padding: 1rem; border-radius: 0 var(--radius-control) var(--radius-control) 0; font-weight: 600; color: var(--primary); }
+.auth-action-box { display: flex; justify-content: center; padding: 2.5rem 1rem; margin: 1.5rem 0; background-color: var(--bg-app); border-radius: var(--radius-card); border: 1px solid var(--border-color); }
+.telemetry-status-display { display: flex; flex-direction: column; gap: 0.75rem; background-color: var(--bg-app); padding: 1.25rem; border-radius: var(--radius-card); border: 1px solid var(--border-color); margin: 1.5rem 0; }
+.telemetry-row { display: flex; justify-content: space-between; align-items: center; font-size: 0.9375rem; }
+.badge { display: inline-flex; padding: 0.25rem 0.5rem; font-size: 0.75rem; font-weight: 600; border-radius: 4px; text-transform: uppercase; letter-spacing: 0.02em; }
+.badge-warning { background-color: rgba(245, 158, 11, 0.15); color: var(--warning); }
+.badge-success { background-color: rgba(16, 185, 129, 0.15); color: var(--success); }
+.badge-danger { background-color: rgba(239, 108, 108, 0.15); color: var(--danger); }
+.long-press-btn { height: 60px; text-transform: uppercase; font-size: 1.125rem; letter-spacing: 0.02em; }
+.transactional-success-layout { text-align: center; padding: 3rem 2rem; }
+.success-checkmark-vector-animation { font-size: 4rem; line-height: 1; margin-bottom: 1.5rem; display: inline-block; animation: scalePopInCheckmark 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+.success-subheading { margin-bottom: 2rem; }
+.receipt-card-layout-box { background-color: var(--bg-app); border: 1px solid var(--border-color); border-radius: var(--radius-card); padding: 1.25rem; display: flex; flex-direction: column; gap: 0.75rem; text-align: left; }
+.receipt-line { display: flex; justify-content: space-between; font-size: 0.9375rem; border-bottom: 1px dashed var(--border-color); padding-bottom: 0.5rem; }
+.receipt-line:last-child { border-bottom: none; padding-bottom: 0; }
+
+/* Notification Layer System Component Design Architecture Engine Logic Structure Array Layout Frame System Controls Elements Matrix Box */
+.toast-container { position: fixed; z-index: 2000; display: flex; flex-direction: column; gap: 0.5rem; pointer-events: none; }
+@media (min-width: 769px) { .toast-container { top: 24px; right: 24px; width: 360px; } }
+@media (max-width: 768px) { .toast-container { bottom: 16px; left: 16px; right: 16px; width: calc(100% - 32px); } }
+.toast-message-card {
+    padding: 1rem 1.25rem;
+    border-radius: var(--radius-control);
+    background-color: var(--bg-card);
+    color: var(--text-main);
+    box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
+    border-left: 4px solid transparent;
+    font-size: 0.9375rem;
+    font-weight: 500;
+    pointer-events: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    animation: toastEntranceFrame 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.toast-message-card.toast-success { border-left-color: var(--success); }
+.toast-message-card.toast-warning { border-left-color: var(--warning); }
+.toast-message-card.toast-error { border-left-color: var(--danger); }
+.toast-dismiss-trigger-btn { background: none; border: none; font-size: 1.25rem; cursor: pointer; color: var(--text-muted); line-height: 1; margin-left: 1rem; }
+
+/* Gateway Matrix Selection Button Interface Panels Component Structure Mapping List Items Row Card Surface Box Container Frame Controls */
+.choice-matrix-card { width: 100%; max-width: 640px; padding: 2.5rem; }
+.choice-matrix-card hr { border: none; border-top: 1px solid var(--border-color); margin: 1.5rem 0; }
+.choice-grid { display: flex; flex-direction: column; gap: 1rem; }
+.matrix-btn-card {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    padding: 1.5rem;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-card);
+    text-decoration: none;
+    color: var(--text-main);
+    background-color: var(--bg-app);
+    transition: var(--transition-smooth);
+}
+.matrix-btn-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-subtle); border-color: var(--primary); }
+.matrix-btn-card .icon { font-size: 2.25rem; line-height: 1; }
+.matrix-btn-card .text-group h3 { margin-bottom: 0.15rem; font-size: 1.125rem; }
+.matrix-btn-card .text-group p { font-size: 0.875rem; color: var(--text-muted); }
+.matrix-btn-card.student-color:hover { border-color: var(--success); }
+.matrix-btn-card.teacher-color:hover { border-color: var(--primary); }
+.fallback-input-field { border-top: 1px dashed var(--border-color); padding-top: 1.25rem; margin-top: 0.5rem; }
+
+/* Structural CSS Keyframes Transformation Pipeline Architecture Elements Definitions System Logic Mechanics Layout Box Node Grid Matrix */
+@keyframes toastEntranceFrame { from { transform: translateY(1rem); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+@keyframes fadeInStepTransition { from { opacity: 0; transform: scale(0.99); } to { opacity: 1; transform: scale(1); } }
+@keyframes slideInEntranceNode { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+@keyframes scalePopInCheckmark { from { transform: scale(0); } to { transform: scale(1); } }

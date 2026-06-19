@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lecturer Consolidated Ledger Dashboard Core Interface Matrix Console</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+</head>
+<body>
+    <header class="app-navbar">
+        <div class="navbar-brand">💼 Management Console Interface System Framework</div>
+        <div class="navbar-actions-group">
+            <button id="openConfigGatewayPanelSettingsBtn" class="btn btn-secondary btn-sm">⚙️ Configure Pipeline Settings Array</button>
+            <button id="themeToggleBtn" class="btn btn-secondary btn-sm" aria-label="Toggle Color Archetype Mode Framework System">🌗 Toggle Mode</button>
+        </div>
+    </header>
+
+    <main class="container dashboard-main-grid-layout">
+        <section class="metrics-grid-row">
+            <div class="card metric-counter-card">
+                <span class="metric-title-header">Total Registered Roster Roll Call Count</span>
+                <span id="metricTotalStudentsNodeValue" class="metric-value-data-string">0</span>
+            </div>
+            <div class="card metric-counter-card">
+                <span class="metric-title-header">Aggregated Active Session Logs Tracking Count</span>
+                <span id="metricTotalSessionsNodeValue" class="metric-value-data-string">0</span>
+            </div>
+            <div class="card metric-counter-card">
+                <span class="metric-title-header">Mean Core Performance Attendance Yield Margin</span>
+                <span id="metricAvgAttendanceRateNodeValue" class="metric-value-data-string">0%</span>
+            </div>
+            <div class="card metric-counter-card">
+                <span class="metric-title-header">Last Registered Database Record Column Transaction Key</span>
+                <span id="metricLastActiveSessionNodeValue" class="metric-value-data-string">None</span>
+            </div>
+        </section>
+
+        <section class="dashboard-operations-row-controls">
+            <button id="triggerSessionCreationModalLaunchBtn" class="btn btn-primary btn-lg">➕ Initialize New Live Attendance Matrix Session</button>
+            <button id="triggerBulkRosterExcelUploadModalLaunchBtn" class="btn btn-secondary btn-lg">📥 Bulk Synchronize Master Roster Excel Spreadsheet Data</button>
+        </section>
+
+        <section id="configurationPipelinePanelBlockWrapper" class="card hidden panel-collapsible-block">
+            <h3>Google Workspace Integration Interfacing Configuration Mapping Parameters Matrix</h3>
+            <p class="text-muted">These security layer access string environment execution keys are stored persistent across cycles locally within user profile instances data arrays.</p>
+            <form id="systemConfigStorageSetupFormParametersPayloadBinder">
+                <div class="form-group-row">
+                    <div class="form-field-element-block">
+                        <label for="configInputTargetAppsScriptUrlEndpointString">Target Google Apps Script Web App Endpoint System Router URI Address String Pointer:</label>
+                        <input type="url" id="configInputTargetAppsScriptUrlEndpointString" class="form-control" placeholder="https://script.google.com/macros/s/.../exec" required>
+                    </div>
+                    <div class="form-field-element-block">
+                        <label for="configInputTargetGoogleSpreadsheetIdentifierUniqueIdHashString">Destination Master Target Google Sheet Document Core Identifier Identification Key Token String Array Node String Value:</label>
+                        <input type="text" id="configInputTargetGoogleSpreadsheetIdentifierUniqueIdHashString" class="form-control" placeholder="14_xR...etc..." required>
+                    </div>
+                </div>
+                <div class="form-actions-footer-row mt-3">
+                    <button type="submit" class="btn btn-success">Synchronize Security Data Linkage Parameters Configuration Anchors Array Matrix</button>
+                </div>
+            </form>
+        </section>
+
+        <section class="card tracking-live-monitor-data-table-card-wrapper-box-element">
+            <div class="table-header-toolbar">
+                <h3>Live Attendance Transaction Streaming Log Activity Mirror Matrix Data Node Viewport</h3>
+                <span class="live-activity-pulse-dot-indicator-badge">🔵 Pipeline Engine Streaming Monitor Sync Status Active</span>
+            </div>
+            <div class="table-responsive-overflow-container-wrapper-box">
+                <table id="liveAttendanceTrackingMatrixDisplayStreamTableNode" class="data-table-element">
+                    <thead>
+                        <tr>
+                            <th>Student Core Identification Key String Reference Name Parameter</th>
+                            <th>Identity Legal Name Record Matrix String Array Field</th>
+                            <th>Active Checked Log Timestamp Index Reference Metric Identifier Value Array Mapping Pointer Matrix</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td colspan="3" class="text-center text-muted">No database entries detected within structural memory arrays. Please provision configurations or create a new tracking verification node session sequence.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <div id="sessionCreationFormDialogModalWindowOverlayFrameContainer" class="modal-backdrop-overlay hidden">
+        <div class="modal-surface-container-card">
+            <div class="modal-header-container">
+                <h3>Provision New Live Interactive Structural Framework Tracking Attendance Target Matrix Session Node Parameter Record Pointer Structure</h3>
+                <button type="button" class="close-modal-dismissal-action-trigger-btn" onclick="document.getElementById('sessionCreationFormDialogModalWindowOverlayFrameContainer').classList.add('hidden')">×</button>
+            </div>
+            <form id="sessionCreationPayloadDataProcessingFormElementBinder">
+                <div class="form-group">
+                    <label for="sessionFormInputCourseTitleStringName">Subject Description Academic Course Classification Identifier Header Title Label Name:</label>
+                    <input type="text" id="sessionFormInputCourseTitleStringName" class="form-control" placeholder="Software Architecture Engineering Subsystem Framework" required>
+                </div>
+                <div class="form-group-row">
+                    <div class="form-field-element-block">
+                        <label for="sessionFormInputSessionIdentifierIndexNumberSequenceCode">Tracking Sequence Session Index Count Number ID Identifier Structural Target Code Number Pointer Array:</label>
+                        <input type="text" id="sessionFormInputSessionIdentifierIndexNumberSequenceCode" class="form-control" placeholder="B01" required>
+                    </div>
+                    <div class="form-field-element-block">
+                        <label for="sessionFormInputSpatialProximityValidationRadiusThresholdMeterValueLimit">Spatial Validation Radius Distance Limit Threshold Envelope Bounds Range Boundary Constraint Value Margin Limit Measure Value Scale Constraint Scale Unit Measures Configuration Options Scale Count Array Value Size Parameter Metric Array Limit Node Bounds Scale Meter Length Unit Index Interval Count Parameters Matrix Count Rating Meter Configuration Metric Level Array Mapping Unit Number Scale Interval Radius Metric Units Measurement Standard Margin Variable Index Field Scale Gauge Metric Indicator Mapping Parameter Gauge Number Set Target Meter Metrics Radius Unit Length Metrics Limit Boundary Dimension System Envelope Range (Meters Units Frame Length Measure Target Bounds Dimension Box Set Standard Boundary Field Value Constraint Scale Limit Target Metric Dimension Gauge Scale Value Number Bounds Unit Meters Count Target Dimensions Length Dimension Bounds Length Measurement Target Values Field):</label>
+                        <input type="number" id="sessionFormInputSpatialProximityValidationRadiusThresholdMeterValueLimit" class="form-control" value="50" min="5" max="5000" required>
+                    </div>
+                </div>
+                <div class="form-group-row">
+                    <div class="form-field-element-block">
+                        <label for="sessionFormInputOperationalLifespanWindowDurationCountdownIntervalMinutesCounter">Operational Active Window Lifespan Validation Expiration Deadline Tracking Timeout Interval Frame Limit Count Counter Variable Value Matrix Length Scale Value Timer Minutes Scale Matrix Field Window Duration Target Minutes Threshold Range Variable Timer Minutes Processing Countdown (Minutes Value Limit Counter Metric Track Counter Field):</label>
+                        <input type="number" id="sessionFormInputOperationalLifespanWindowDurationCountdownIntervalMinutesCounter" class="form-control" value="90" min="1" max="480" required>
+                    </div>
+                </div>
+                <div class="modal-footer-actions-container-bar mt-4">
+                    <button type="button" class="btn btn-secondary" onclick="document.getElementById('sessionCreationFormDialogModalWindowOverlayFrameContainer').classList.add('hidden')">Abort Execution Sequence Parameter Core Mapping Block Action Controls</button>
+                    <button type="submit" class="btn btn-primary">Generate QR Verification Anchor Matrix Token Identity Structural Core Nodes Node System Pipeline Block Mapping Trigger Sequence Action</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="rosterSpreadsheetImportProcessingEngineDialogModalWindowOverlayFrameContainer" class="modal-backdrop-overlay hidden">
+        <div class="modal-surface-container-card">
+            <div class="modal-header-container">
+                <h3>Bulk Synchronize Master Student Roster Database Array via Raw Spreadsheet Interactivity Upload Action Controller Pipeline Target System</h3>
+                <button type="button" class="close-modal-dismissal-action-trigger-btn" onclick="document.getElementById('rosterSpreadsheetImportProcessingEngineDialogModalWindowOverlayFrameContainer').classList.add('hidden')">×</button>
+            </div>
+            <div class="modal-body-content-wrapper-scroll-box-area">
+                <p class="text-muted mb-3">Upload an Excel spreadsheet (`.xlsx` or `.xls`) file to configure the student registry. Ensure the file contains the required columns: <strong>MSSV</strong> (Student ID string value pointer descriptor identifier tracking data key token node variable array) and <strong>HoTen</strong> (Full legal identity name value registry string array pattern block structure).</p>
+                <div class="file-upload-dropzone-interactive-area-wrapper-card-surface-box-container">
+                    <input type="file" id="masterRosterSpreadsheetFileInputPickerElementSourceNode" accept=".xlsx, .xls" class="hidden-native-file-picker-element-node-input">
+                    <label for="masterRosterSpreadsheetFileInputPickerElementSourceNode" class="dropzone-visual-label-facade-action-trigger-surface-button-box-card-wrapper-frame-element">
+                        <span class="dropzone-icon-glyph-vector-symbol">📊</span>
+                        <strong>Choose a spreadsheet file</strong>
+                        <span class="file-spec-constraints-label text-muted mt-1">Standard Microsoft Excel Spreadsheet Workbook Binary Document Objects Format Extensions Type Verified Structure Size Format Standard Valid File Layout Structures Accepted Only Vector Data Core Node File Matrix Linkage Target Source Pipeline File System Processing Elements Pipeline System Format Structure Matrix</span>
+                    </label>
+                </div>
+                <div id="spreadsheetParsingPreviewDataSummaryMatrixBlockBoxContainer" class="hidden preview-data-summary-box-card mt-3">
+                    <h4>Parsing Summary Matrix Diagnostic Pipeline Report Data Mirror Output Analysis Nodes Matrix Viewport Data Field Structure</h4>
+                    <div class="summary-stat-row-line"><span>Parsed Record Counts Extracted Array Element Items Length Total Index Mapping Sequence Value Data Number Value:</span><strong id="summaryDataNodeParsedStudentsCountOutputMetricTextLabelValue">0 entries verified</strong></div>
+                </div>
+            </div>
+            <div class="modal-footer-actions-container-bar mt-4">
+                <button type="button" class="btn btn-secondary" onclick="document.getElementById('rosterSpreadsheetImportProcessingEngineDialogModalWindowOverlayFrameContainer').classList.add('hidden')">Cancel Pipeline Task Operation Controls Block Configuration Interface System</button>
+                <button id="commitParsedRosterDataToRemoteStorageCloudDatabaseEndpointActionBtn" class="btn btn-success" disabled>Commit Roster To Cloud Architecture Infrastructure Database Storage Cluster Data Center Node Endpoint Gateway Instance Network Array System</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="classroomBroadcastTerminalProjectionQrMatrixDisplayWindowOverlayFrameContainer" class="modal-backdrop-overlay hidden broadcast-mode-fullscreen-surface-panel-wrapper-box-container-card-layout-window">
+        <div class="broadcast-workspace-grid-layout-container-wrapper-box-card-surface-frame">
+            <div class="broadcast-header-toolbar">
+                <div class="session-identity-meta-info-block-wrapper">
+                    <h1 id="broadcastTargetSubjectCourseLabelTitleHeaderStringNodeText">Course Identity Descriptor Title Mapping Placeholder String</h1>
+                    <p id="broadcastTargetSessionSequenceIdentifierSubheadingIndexLabelStringNodeText" class="session-badge-subtitle-info-string-label">Tracking Sequence Index Pointer Identifier Target Code: B00</p>
+                </div>
+                <button type="button" id="terminateClassroomBroadcastTerminalTrackingOperationSessionActionBtn" class="btn btn-danger btn-lg">Close Terminal Interface Broadcast & Terminate Active Streaming Data Pipeline Viewport Monitoring Engine Node Window Frame Surface Panel Layout System Framework</button>
+            </div>
+            
+            <div class="broadcast-core-display-workspace-body-flex-row-container-wrapper-box">
+                <div class="qr-code-presentation-viewport-centered-card-surface-box-wrapper-frame">
+                    <div id="classroomBroadcastInteractiveQrCodeGraphicsOutputRenderCanvasNode" class="qr-graphics-canvas-container-node"></div>
+                    <div id="broadcastSessionCountdownClockTimerDisplayContainerTextValueNode" class="countdown-timer-numeric-display-string-badge-clock-wrapper">00:00</div>
+                </div>
+                
+                <div class="live-activity-stream-sidebar-panel-card-surface-wrapper-box">
+                    <div class="sidebar-counter-card">
+                        <span class="sidebar-counter-label">Students Checked In</span>
+                        <span id="broadcastLiveCheckedInCounterTrackingMetricValueDisplayNodeText" class="sidebar-counter-value-string">0</span>
+                    </div>
+                    <div class="sidebar-activity-log-scroller-box-container-wrapper-frame-element">
+                        <h4>Real-Time Check-In Stream</h4>
+                        <ul id="broadcastLiveActivityTickerStreamListTrackerDataNodeElements" class="ticker-stream-unordered-list-element-wrapper-box">
+                            <li class="empty-state-placeholder-item text-muted">Awaiting incoming authentication requests...</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="toastContainer" class="toast-container" aria-live="polite"></div>
+    <script type="module" src="js/app.js"></script>
+</body>
+</html>
