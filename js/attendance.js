@@ -25,6 +25,8 @@ export const AttendanceTransactionProcessingCoreEngine = {
       throw new Error("Chưa có thông tin đăng nhập.");
     }
 
+    const derivedMssvFromEmailUsername = this.extractMssvIdentifierCodeFromStringValueEmailUsername(profilePayload.email);
+
     if (!this.verifyStudentIdentityContextEmailDomainScope(profilePayload.email)) {
       throw new Error("Tài khoản không thuộc miền được phép.");
     }
@@ -35,16 +37,25 @@ export const AttendanceTransactionProcessingCoreEngine = {
       throw new Error("Buổi điểm danh đã hết thời gian.");
     }
 
-    // Spatial coordinate verification matrix array parameters check calculation structure tracking variables data map node mapping array index metrics
-    const computedLinearDistanceDeltaOffsetMetersScalarLengthMeasurement = SpatialTelemetryEngine.calculateHaversineDistance(
-      parseFloat(currentPositionTelemetryCoordinatesSnapshotNodeObjectFieldValues.latitude),
-      parseFloat(currentPositionTelemetryCoordinatesSnapshotNodeObjectFieldValues.longitude),
-      parseFloat(activeSessionConfigContextStateParametersMatrixPayloadNode.lat),
-      parseFloat(activeSessionConfigContextStateParametersMatrixPayloadNode.lng)
-    );
+    const isOnlineSession = String(activeSessionConfigContextStateParametersMatrixPayloadNode.mode || 'offline') === 'online';
+    let computedLinearDistanceDeltaOffsetMetersScalarLengthMeasurement = 0;
 
-    if (computedLinearDistanceDeltaOffsetMetersScalarLengthMeasurement > parseFloat(activeSessionConfigContextStateParametersMatrixPayloadNode.radius)) {
-      throw new Error(`Bạn đang ở ngoài khu vực cho phép. Khoảng cách hiện tại: ${Math.round(computedLinearDistanceDeltaOffsetMetersScalarLengthMeasurement)} m.`);
+    if (!isOnlineSession) {
+      if (!currentPositionTelemetryCoordinatesSnapshotNodeObjectFieldValues) {
+        throw new Error("Thiếu dữ liệu vị trí.");
+      }
+
+      // Spatial coordinate verification matrix array parameters check calculation structure tracking variables data map node mapping array index metrics
+      computedLinearDistanceDeltaOffsetMetersScalarLengthMeasurement = SpatialTelemetryEngine.calculateHaversineDistance(
+        parseFloat(currentPositionTelemetryCoordinatesSnapshotNodeObjectFieldValues.latitude),
+        parseFloat(currentPositionTelemetryCoordinatesSnapshotNodeObjectFieldValues.longitude),
+        parseFloat(activeSessionConfigContextStateParametersMatrixPayloadNode.lat),
+        parseFloat(activeSessionConfigContextStateParametersMatrixPayloadNode.lng)
+      );
+
+      if (computedLinearDistanceDeltaOffsetMetersScalarLengthMeasurement > parseFloat(activeSessionConfigContextStateParametersMatrixPayloadNode.radius)) {
+        throw new Error(`Bạn đang ở ngoài khu vực cho phép. Khoảng cách hiện tại: ${Math.round(computedLinearDistanceDeltaOffsetMetersScalarLengthMeasurement)} m.`);
+      }
     }
 
     // Prepare and execute remote transactional sync call mapping operations to Google Apps Script Web App Endpoint System Gateway Engine Router Instance Structure Cloud
@@ -52,9 +63,12 @@ export const AttendanceTransactionProcessingCoreEngine = {
       action: 'submitAttendance',
       attendance: {
         sessionId: activeSessionConfigContextStateParametersMatrixPayloadNode.id,
+        mssv: derivedMssvFromEmailUsername,
+        studentName: profilePayload.name || '',
         email: profilePayload.email,
-        lat: currentPositionTelemetryCoordinatesSnapshotNodeObjectFieldValues.latitude,
-        lng: currentPositionTelemetryCoordinatesSnapshotNodeObjectFieldValues.longitude,
+        mode: activeSessionConfigContextStateParametersMatrixPayloadNode.mode || 'offline',
+        lat: currentPositionTelemetryCoordinatesSnapshotNodeObjectFieldValues ? currentPositionTelemetryCoordinatesSnapshotNodeObjectFieldValues.latitude : null,
+        lng: currentPositionTelemetryCoordinatesSnapshotNodeObjectFieldValues ? currentPositionTelemetryCoordinatesSnapshotNodeObjectFieldValues.longitude : null,
         distance: computedLinearDistanceDeltaOffsetMetersScalarLengthMeasurement
       }
     };

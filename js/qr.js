@@ -7,6 +7,7 @@ export const VisualSymbologyEngine = {
     const transportContainer = {
       i: sessionObject.id,
       n: sessionObject.name,
+      m: sessionObject.mode || 'offline',
       lt: sessionObject.lat,
       lg: sessionObject.lng,
       r: sessionObject.radius,
@@ -22,6 +23,7 @@ export const VisualSymbologyEngine = {
       return {
         id: packageObject.i,
         name: packageObject.n,
+        mode: packageObject.m || 'offline',
         lat: parseFloat(packageObject.lt),
         lng: parseFloat(packageObject.lg),
         radius: parseInt(packageObject.r, 10),

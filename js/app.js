@@ -10,6 +10,8 @@ import { FederatedIdentityEngine } from './auth.js';
 import { UserInterfaceCoreEngine } from './ui.js';
 import { AttendanceTransactionProcessingCoreEngine } from './attendance.js';
 
+const DEFAULT_APPS_SCRIPT_EXEC_URL = 'https://script.google.com/macros/s/AKfycbyeoUI1Lfbz2odTpmXkKyF7E2iovjODBxqLrphOYERRav02sZDSVlO3NStHybXPSUkOwA/exec';
+
 // Global System Runtime Application Context State Variables Structural Mapping Infrastructure Pipeline Data Collection Block Nodes Matrix Storage Container Objects Elements Array Data Store Track Structure Core Node
 const RuntimeApplicationContextStateMemoryEngineMatrixContainerObjectArrayNodeStoreInstance = {
   activeSessionConfigurationParametersPayloadMappingDataNodeObject: null,
@@ -79,29 +81,80 @@ function processTargetSessionBindingActionSequenceTrigger(validatedSessionConfig
     RuntimeApplicationContextStateMemoryEngineMatrixContainerObjectArrayNodeStoreInstance.activeCameraStreamReaderScannerHardwareModuleProxyInstanceEngineNodeObject.stop().catch(e => console.log(e));
   }
 
-  document.getElementById('targetSessionEchoTitle').textContent = `Buổi học: ${validatedSessionConfigPayloadStructureDataNodeObject.name} (${validatedSessionConfigPayloadStructureDataNodeObject.id})`;
+  const sessionModeLabel = String(validatedSessionConfigPayloadStructureDataNodeObject.mode || 'offline') === 'online' ? 'Online' : 'Trực tiếp';
+  document.getElementById('targetSessionEchoTitle').textContent = `Buổi học ${sessionModeLabel}: ${validatedSessionConfigPayloadStructureDataNodeObject.name} (${validatedSessionConfigPayloadStructureDataNodeObject.id})`;
   UserInterfaceCoreEngine.switchMobileFlowActiveStepViewportCard('stepAuth');
 
   // Verify Identity Profile Cache or Render Sign-In Interface Components Interface Elements
   const cachedIdentityProfile = StorageEngine.get('identity_profile_cached_payload');
   if (cachedIdentityProfile && AttendanceTransactionProcessingCoreEngine.verifyStudentIdentityContextEmailDomainScope(cachedIdentityProfile.email)) {
-    proceedToSpatialTelemetryVerificationFlowSequenceStep();
+    proceedToAttendanceSubmissionFlowSequenceStep();
   } else {
     FederatedIdentityEngine.initializeGoogleIdentityButton('googleIdentityButtonWrapper', (claimsResponsePayloadObjectDataArrayNodeValueReferencePointer) => {
       UserInterfaceCoreEngine.showToastNotification(`Đã xác minh: ${claimsResponsePayloadObjectDataArrayNodeValueReferencePointer.email}`, 'success');
-      proceedToSpatialTelemetryVerificationFlowSequenceStep();
+      proceedToAttendanceSubmissionFlowSequenceStep();
     });
   }
 }
 
-function proceedToSpatialTelemetryVerificationFlowSequenceStep() {
-  UserInterfaceCoreEngine.switchMobileFlowActiveStepViewportCard('stepGps');
+function proceedToAttendanceSubmissionFlowSequenceStep() {
+  const targetSession = RuntimeApplicationContextStateMemoryEngineMatrixContainerObjectArrayNodeStoreInstance.activeSessionConfigurationParametersPayloadMappingDataNodeObject;
+  const isOnlineSession = String(targetSession.mode || 'offline') === 'online';
   const actionTriggerBtn = document.getElementById('triggerAttendanceExecutionActionBtn');
+  const gpsRequirementNoteNode = document.getElementById('gpsRequirementNoteNode');
+  const gpsTelemetryPanelNode = document.getElementById('gpsTelemetryPanelNode');
+  const stepGpsTitleNode = document.querySelector('#stepGps h2');
+
+  UserInterfaceCoreEngine.switchMobileFlowActiveStepViewportCard('stepGps');
+
+  if (stepGpsTitleNode) {
+    stepGpsTitleNode.textContent = isOnlineSession ? 'Xác nhận điểm danh' : 'Kiểm tra vị trí';
+  }
+
+  if (gpsRequirementNoteNode) {
+    gpsRequirementNoteNode.textContent = isOnlineSession
+      ? 'Buổi học online, không cần xác minh vị trí.'
+      : 'Hệ thống sẽ đối chiếu vị trí của bạn với lớp học hiện tại.';
+  }
+
+  if (gpsTelemetryPanelNode) {
+    gpsTelemetryPanelNode.classList.toggle('hidden', isOnlineSession);
+  }
+
+  if (isOnlineSession) {
+    actionTriggerBtn.removeAttribute('disabled');
+    actionTriggerBtn.textContent = 'Điểm danh';
+  }
   
+  if (isOnlineSession) {
+    actionTriggerBtn.onclick = async () => {
+      actionTriggerBtn.setAttribute('disabled', 'true');
+      actionTriggerBtn.textContent = 'Đang gửi điểm danh...';
+
+      try {
+        const txResponseResult = await AttendanceTransactionProcessingCoreEngine.executeAttendancePipelineTransactionVerificationWorkflowSequence(
+          RuntimeApplicationContextStateMemoryEngineMatrixContainerObjectArrayNodeStoreInstance.activeSessionConfigurationParametersPayloadMappingDataNodeObject,
+          null
+        );
+
+        document.getElementById('receiptMssvOutputNode').textContent = txResponseResult.mssv;
+        document.getElementById('receiptCourseOutputNode').textContent = txResponseResult.sessionName;
+        document.getElementById('receiptTimestampOutputNode').textContent = txResponseResult.time;
+
+        UserInterfaceCoreEngine.switchMobileFlowActiveStepViewportCard('stepSuccess');
+        UserInterfaceCoreEngine.showToastNotification("Đã gửi điểm danh thành công.", 'success');
+      } catch (error) {
+        UserInterfaceCoreEngine.showToastNotification(error.message, 'error');
+        actionTriggerBtn.removeAttribute('disabled');
+        actionTriggerBtn.textContent = 'Điểm danh';
+      }
+    };
+    return;
+  }
+
   const telemetryRefreshTrackingWorkerLoopTickRoutineSequenceHandler = async () => {
     try {
       const locationCoordsSnapshot = await SpatialTelemetryEngine.getCurrentLocationCoordinates();
-      const targetSession = RuntimeApplicationContextStateMemoryEngineMatrixContainerObjectArrayNodeStoreInstance.activeSessionConfigurationParametersPayloadMappingDataNodeObject;
       
       const absoluteLinearDistanceDeltaOffsetMetersScalarLengthValueMeasureValue = SpatialTelemetryEngine.calculateHaversineDistance(
         locationCoordsSnapshot.latitude,
@@ -134,6 +187,7 @@ function proceedToSpatialTelemetryVerificationFlowSequenceStep() {
   telemetryRefreshTrackingWorkerLoopTickRoutineSequenceHandler();
   RuntimeApplicationContextStateMemoryEngineMatrixContainerObjectArrayNodeStoreInstance.activeStudentGpsTrackingLoopRealTimeWatcherProcessThreadIdCounterValue = setInterval(telemetryRefreshTrackingWorkerLoopTickRoutineSequenceHandler, 5000);
 
+  actionTriggerBtn.onclick = null;
   actionTriggerBtn.addEventListener('click', async () => {
     actionTriggerBtn.setAttribute('disabled', 'true');
     actionTriggerBtn.textContent = "Đang gửi điểm danh...";
@@ -167,38 +221,76 @@ function proceedToSpatialTelemetryVerificationFlowSequenceStep() {
  * =========================================================================================================
  */
 function initializeTeacherDashboardManagementConsoleAppEngineSystemRoutineSequence() {
-  // Bind Configuration Form Panel Visibility Triggers
-  document.getElementById('openConfigGatewayPanelSettingsBtn').addEventListener('click', () => {
-    const panel = document.getElementById('configurationPipelinePanelBlockWrapper');
-    panel.classList.toggle('hidden');
-  });
+  // Populate preferences only when a settings panel exists (admin-only mode)
+  const settingsPanel = document.getElementById('configurationPipelinePanelBlockWrapper');
+  const openSettingsButton = document.getElementById('openConfigGatewayPanelSettingsBtn');
+  const appsScriptUrlInputNode = document.getElementById('configInputTargetAppsScriptUrlEndpointString');
+  const sheetIdInputNode = document.getElementById('configInputTargetGoogleSpreadsheetIdentifierUniqueIdHashString');
+  const googleClientIdInputNode = document.getElementById('configInputGoogleClientIdString');
+  const sessionModeSelectNode = document.getElementById('sessionFormInputSessionModeSelectValue');
+  const radiusFieldNode = document.getElementById('sessionFormSpatialRadiusField');
 
-  // Populate System Preferences Environmental Variable Cache State Tokens To Inputs Interface Facade Arrays
-  document.getElementById('configInputTargetAppsScriptUrlEndpointString').value = StorageEngine.get('apps_script_url', '');
-  document.getElementById('configInputTargetGoogleSpreadsheetIdentifierUniqueIdHashString').value = StorageEngine.get('spreadsheet_id', '');
+  const syncTeacherSessionModeUi = () => {
+    if (!sessionModeSelectNode || !radiusFieldNode) return;
+    const isOnlineMode = sessionModeSelectNode.value === 'online';
+    radiusFieldNode.classList.toggle('hidden', isOnlineMode);
+    const radiusInputNode = document.getElementById('sessionFormInputSpatialProximityValidationRadiusThresholdMeterValueLimit');
+    if (radiusInputNode) {
+      radiusInputNode.required = !isOnlineMode;
+    }
+  };
 
-  document.getElementById('systemConfigStorageSetupFormParametersPayloadBinder').addEventListener('submit', (e) => {
-    e.preventDefault();
-    const url = document.getElementById('configInputTargetAppsScriptUrlEndpointString').value.trim();
-    const sheetId = document.getElementById('configInputTargetGoogleSpreadsheetIdentifierUniqueIdHashString').value.trim();
-    
-    StorageEngine.set('apps_script_url', url);
-    StorageEngine.set('spreadsheet_id', sheetId);
-    
-    UserInterfaceCoreEngine.showToastNotification("Đã lưu cài đặt.", 'success');
-    document.getElementById('configurationPipelinePanelBlockWrapper').classList.add('hidden');
-    refreshDashboardAnalyticalMetricsSummaryCountersDisplayNodeValues();
-  });
+  if (settingsPanel && openSettingsButton) {
+    openSettingsButton.addEventListener('click', () => {
+      settingsPanel.classList.toggle('hidden');
+    });
+  }
+
+  if (appsScriptUrlInputNode) {
+    const savedAppsScriptUrl = StorageEngine.get('apps_script_url', '');
+    appsScriptUrlInputNode.value = savedAppsScriptUrl || DEFAULT_APPS_SCRIPT_EXEC_URL;
+  }
+
+  if (sheetIdInputNode) {
+    sheetIdInputNode.value = StorageEngine.get('spreadsheet_id', '');
+  }
+
+  if (googleClientIdInputNode) {
+    googleClientIdInputNode.value = StorageEngine.get('google_client_id', '');
+  }
+
+  if (sessionModeSelectNode) {
+    sessionModeSelectNode.addEventListener('change', syncTeacherSessionModeUi);
+    syncTeacherSessionModeUi();
+  }
+
+  const settingsForm = document.getElementById('systemConfigStorageSetupFormParametersPayloadBinder');
+  if (settingsForm && appsScriptUrlInputNode && sheetIdInputNode) {
+    settingsForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const url = appsScriptUrlInputNode.value.trim();
+      const sheetId = sheetIdInputNode.value.trim();
+      const googleClientId = googleClientIdInputNode ? googleClientIdInputNode.value.trim() : '';
+      
+      StorageEngine.set('apps_script_url', url);
+      StorageEngine.set('spreadsheet_id', sheetId);
+      StorageEngine.set('google_client_id', googleClientId);
+      
+      UserInterfaceCoreEngine.showToastNotification("Đã lưu cài đặt.", 'success');
+      settingsPanel?.classList.add('hidden');
+      refreshDashboardAnalyticalMetricsSummaryCountersDisplayNodeValues();
+    });
+  }
 
   // Trigger Actions Modals Overlay Views Launch State Elements Interfaces Controllers Handlers Setup Linkage
   document.getElementById('triggerSessionCreationModalLaunchBtn').addEventListener('click', () => {
-    const url = StorageEngine.get('apps_script_url');
+    const url = StorageEngine.get('apps_script_url', DEFAULT_APPS_SCRIPT_EXEC_URL) || DEFAULT_APPS_SCRIPT_EXEC_URL;
     if(!url) { UserInterfaceCoreEngine.showToastNotification("Vui lòng lưu URL Apps Script trước.", 'warning'); return; }
     document.getElementById('sessionCreationFormDialogModalWindowOverlayFrameContainer').classList.remove('hidden');
   });
 
   document.getElementById('triggerBulkRosterExcelUploadModalLaunchBtn').addEventListener('click', () => {
-    const url = StorageEngine.get('apps_script_url');
+    const url = StorageEngine.get('apps_script_url', DEFAULT_APPS_SCRIPT_EXEC_URL) || DEFAULT_APPS_SCRIPT_EXEC_URL;
     if(!url) { UserInterfaceCoreEngine.showToastNotification("Vui lòng lưu URL Apps Script trước.", 'warning'); return; }
     document.getElementById('rosterSpreadsheetImportProcessingEngineDialogModalWindowOverlayFrameContainer').classList.remove('hidden');
   });
@@ -272,10 +364,9 @@ function initializeTeacherDashboardManagementConsoleAppEngineSystemRoutineSequen
     try {
       const courseName = document.getElementById('sessionFormInputCourseTitleStringName').value.trim();
       const sessionNum = document.getElementById('sessionFormInputSessionIdentifierIndexNumberSequenceCode').value.trim();
+      const sessionMode = sessionModeSelectNode ? sessionModeSelectNode.value : 'offline';
       const radiusValue = document.getElementById('sessionFormInputSpatialProximityValidationRadiusThresholdMeterValueLimit').value;
       const durationMinutes = document.getElementById('sessionFormInputOperationalLifespanWindowDurationCountdownIntervalMinutesCounter').value;
-      
-      const hardwareCoordsSnapshot = await SpatialTelemetryEngine.getCurrentLocationCoordinates();
       const generatedSessionUniqueUidTokenKey = `SESS_${new Date().getTime()}`;
       const epochExpirationTimestampCalculationTicks = new Date().getTime() + (parseInt(durationMinutes, 10) * 60 * 1000);
       
@@ -283,15 +374,21 @@ function initializeTeacherDashboardManagementConsoleAppEngineSystemRoutineSequen
       const formattedTimeStringHmsNodeValue = new Date().toTimeString().split(' ')[0];
       const formattedEndTimeStringHmsNodeValue = new Date(epochExpirationTimestampCalculationTicks).toTimeString().split(' ')[0];
 
+      let hardwareCoordsSnapshot = null;
+      if (sessionMode === 'offline') {
+        hardwareCoordsSnapshot = await SpatialTelemetryEngine.getCurrentLocationCoordinates();
+      }
+
       const sessionTransportPayloadObjectStructureInstance = {
         id: generatedSessionUniqueUidTokenKey,
         name: `${courseName} - ${sessionNum}`,
+        mode: sessionMode,
         date: formattedDateStringYmdNodeValue,
         startTime: formattedTimeStringHmsNodeValue,
         endTime: formattedEndTimeStringHmsNodeValue,
-        lat: hardwareCoordsSnapshot.latitude,
-        lng: hardwareCoordsSnapshot.longitude,
-        radius: radiusValue
+        lat: hardwareCoordsSnapshot ? hardwareCoordsSnapshot.latitude : null,
+        lng: hardwareCoordsSnapshot ? hardwareCoordsSnapshot.longitude : null,
+        radius: sessionMode === 'online' ? 0 : radiusValue
       };
 
       await ApiGateway.executeRequest('createSession', { session: sessionTransportPayloadObjectStructureInstance });
@@ -311,7 +408,7 @@ function initializeTeacherDashboardManagementConsoleAppEngineSystemRoutineSequen
 }
 
 async function refreshDashboardAnalyticalMetricsSummaryCountersDisplayNodeValues() {
-  const checkUrlExistSetting = StorageEngine.get('apps_script_url');
+  const checkUrlExistSetting = StorageEngine.get('apps_script_url', DEFAULT_APPS_SCRIPT_EXEC_URL) || DEFAULT_APPS_SCRIPT_EXEC_URL;
   if(!checkUrlExistSetting) return;
   
   try {
@@ -330,7 +427,8 @@ function launchClassroomBroadcastTerminalProjectionInterfaceViewMonitor(sessionC
   broadcastOverlay.classList.remove('hidden');
 
   document.getElementById('broadcastTargetSubjectCourseLabelTitleHeaderStringNodeText').textContent = sessionConfigObjectPayloadDataNodeReferenceItem.name.split('-')[0].trim();
-  document.getElementById('broadcastTargetSessionSequenceIdentifierSubheadingIndexLabelStringNodeText').textContent = `Mã phiên: ${sessionConfigObjectPayloadDataNodeReferenceItem.id}`;
+  const broadcastSessionModeLabel = String(sessionConfigObjectPayloadDataNodeReferenceItem.mode || 'offline') === 'online' ? 'Online' : 'Trực tiếp';
+  document.getElementById('broadcastTargetSessionSequenceIdentifierSubheadingIndexLabelStringNodeText').textContent = `${broadcastSessionModeLabel} · Mã phiên: ${sessionConfigObjectPayloadDataNodeReferenceItem.id}`;
 
   // Encapsulate structural compressed transport tokens data schema vectors parameters string values network blocks format strings matrix payload system configurations values
   const payloadBase64TransportCompressedStringField = VisualSymbologyEngine.generateSessionPayloadString({

@@ -28,6 +28,7 @@
             <h2>Xác minh danh tính</h2>
             <p id="targetSessionEchoTitle" class="session-display-banner">Đang tải thông tin buổi học...</p>
             <p class="text-muted">Đăng nhập bằng tài khoản trường để tiếp tục.</p>
+            <p class="text-muted">Hệ thống sẽ lấy MSSV từ phần trước ký tự @ của email Google để đối chiếu với danh sách ban đầu.</p>
             <div class="auth-action-box">
                 <div id="googleIdentityButtonWrapper"></div>
             </div>
@@ -35,9 +36,9 @@
 
         <section id="stepGps" class="card flow-step-card hidden">
             <h2>Kiểm tra vị trí</h2>
-            <p class="text-muted">Hệ thống sẽ đối chiếu vị trí của bạn với lớp học hiện tại.</p>
+            <p id="gpsRequirementNoteNode" class="text-muted">Hệ thống sẽ đối chiếu vị trí của bạn với lớp học hiện tại.</p>
             
-            <div class="telemetry-status-display">
+            <div id="gpsTelemetryPanelNode" class="telemetry-status-display">
                 <div class="telemetry-row">
                     <span>Khoảng cách:</span>
                     <strong id="gpsDistanceDisplayMeterValue">Đang kiểm tra...</strong>

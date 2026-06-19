@@ -15,7 +15,6 @@
     <header class="app-navbar">
         <div class="navbar-brand">💼 Quản lý điểm danh</div>
         <div class="navbar-actions-group">
-            <button id="openConfigGatewayPanelSettingsBtn" class="btn btn-secondary btn-sm">⚙️ Cài đặt</button>
             <button id="themeToggleBtn" class="btn btn-secondary btn-sm" aria-label="Đổi giao diện">Giao diện</button>
         </div>
     </header>
@@ -43,26 +42,6 @@
         <section class="dashboard-operations-row-controls">
             <button id="triggerSessionCreationModalLaunchBtn" class="btn btn-primary btn-lg">➕ Tạo buổi điểm danh</button>
             <button id="triggerBulkRosterExcelUploadModalLaunchBtn" class="btn btn-secondary btn-lg">📥 Nhập danh sách Excel</button>
-        </section>
-
-        <section id="configurationPipelinePanelBlockWrapper" class="card hidden panel-collapsible-block">
-            <h3>Kết nối Google Sheet</h3>
-            <p class="text-muted">Thiết lập đường dẫn Apps Script và mã bảng tính để lưu dữ liệu.</p>
-            <form id="systemConfigStorageSetupFormParametersPayloadBinder">
-                <div class="form-group-row">
-                    <div class="form-field-element-block">
-                        <label for="configInputTargetAppsScriptUrlEndpointString">URL Apps Script:</label>
-                        <input type="url" id="configInputTargetAppsScriptUrlEndpointString" class="form-control" placeholder="https://script.google.com/macros/s/.../exec" required>
-                    </div>
-                    <div class="form-field-element-block">
-                        <label for="configInputTargetGoogleSpreadsheetIdentifierUniqueIdHashString">ID Google Sheet:</label>
-                        <input type="text" id="configInputTargetGoogleSpreadsheetIdentifierUniqueIdHashString" class="form-control" placeholder="14_xR...etc..." required>
-                    </div>
-                </div>
-                <div class="form-actions-footer-row mt-3">
-                    <button type="submit" class="btn btn-success">Lưu cài đặt</button>
-                </div>
-            </form>
         </section>
 
         <section class="card tracking-live-monitor-data-table-card-wrapper-box-element">
@@ -100,12 +79,20 @@
                     <label for="sessionFormInputCourseTitleStringName">Tên môn học:</label>
                     <input type="text" id="sessionFormInputCourseTitleStringName" class="form-control" placeholder="Nhập tên môn học" required>
                 </div>
+                <div class="form-group">
+                    <label for="sessionFormInputSessionModeSelectValue">Hình thức buổi học:</label>
+                    <select id="sessionFormInputSessionModeSelectValue" class="form-control">
+                        <option value="offline" selected>Trực tiếp</option>
+                        <option value="online">Online</option>
+                    </select>
+                    <small class="text-muted">Buổi online sẽ bỏ qua phần GPS.</small>
+                </div>
                 <div class="form-group-row">
                     <div class="form-field-element-block">
                         <label for="sessionFormInputSessionIdentifierIndexNumberSequenceCode">Mã lớp:</label>
                         <input type="text" id="sessionFormInputSessionIdentifierIndexNumberSequenceCode" class="form-control" placeholder="B01" required>
                     </div>
-                    <div class="form-field-element-block">
+                    <div id="sessionFormSpatialRadiusField" class="form-field-element-block">
                         <label for="sessionFormInputSpatialProximityValidationRadiusThresholdMeterValueLimit">Bán kính cho phép (m):</label>
                         <input type="number" id="sessionFormInputSpatialProximityValidationRadiusThresholdMeterValueLimit" class="form-control" value="50" min="5" max="5000" required>
                     </div>
@@ -132,6 +119,7 @@
             </div>
             <div class="modal-body-content-wrapper-scroll-box-area">
                 <p class="text-muted mb-3">Tải lên file Excel (.xlsx hoặc .xls). File cần có hai cột: <strong>MSSV</strong> và <strong>HoTen</strong>.</p>
+                <p class="text-muted mb-3">MSSV trong danh sách phải trùng với phần trước ký tự @ của email Google sinh viên để hệ thống tự map điểm danh.</p>
                 <div class="file-upload-dropzone-interactive-area-wrapper-card-surface-box-container">
                     <input type="file" id="masterRosterSpreadsheetFileInputPickerElementSourceNode" accept=".xlsx, .xls" class="hidden-native-file-picker-element-node-input">
                     <label for="masterRosterSpreadsheetFileInputPickerElementSourceNode" class="dropzone-visual-label-facade-action-trigger-surface-button-box-card-wrapper-frame-element">

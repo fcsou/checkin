@@ -5,6 +5,10 @@
 import { StorageEngine } from './storage.js';
 
 export const FederatedIdentityEngine = {
+  getConfiguredGoogleClientId() {
+    return StorageEngine.get('google_client_id', '').trim();
+  },
+
   decodeJwtPayloadClaimsToken(credentialJwtTokenString) {
     try {
       const base64UrlString = credentialJwtTokenString.split('.')[1];
@@ -20,13 +24,25 @@ export const FederatedIdentityEngine = {
 
   initializeGoogleIdentityButton(containerElementId, authenticationCallbackSuccessHandler) {
     // Dynamic initialization of structural system credentials elements anchors parameters layer tracking module vectors
+    const containerElement = document.getElementById(containerElementId);
+    if (!containerElement) return;
+
+    containerElement.innerHTML = '';
+
+    const configuredClientId = this.getConfiguredGoogleClientId();
+    if (!configuredClientId) {
+      containerElement.innerHTML = '<div class="text-muted">Chưa có Google Client ID. Hãy nhập trong phần cài đặt của giảng viên.</div>';
+      return;
+    }
+
     if (typeof google === 'undefined' || !google.accounts) {
       console.error("Không tải được thư viện đăng nhập Google.");
+      containerElement.innerHTML = '<div class="text-muted">Không tải được nút đăng nhập Google. Hãy kiểm tra kết nối mạng hoặc tải lại trang.</div>';
       return;
     }
 
     google.accounts.id.initialize({
-      client_id: "973151838491-v78amfbrgkvpdmv7oqtkl0v6143cfaon.apps.googleusercontent.com", // Multi-tenant dynamic binding engine client identifier token key profile system parameters framework mapping setup logic
+      client_id: configuredClientId,
       callback: (authResponsePacket) => {
         try {
           const claimsPayload = this.decodeJwtPayloadClaimsToken(authResponsePacket.credential);
@@ -38,9 +54,14 @@ export const FederatedIdentityEngine = {
       }
     });
 
-    google.accounts.id.renderButton(
-      document.getElementById(containerElementId),
-      { theme: "outline", size: "large", width: "100%", text: "signin_with" }
-    );
+    try {
+      google.accounts.id.renderButton(
+        containerElement,
+        { theme: "outline", size: "large", width: 320, text: "signin_with" }
+      );
+    } catch (error) {
+      console.error("Không thể hiển thị nút đăng nhập Google.", error);
+      containerElement.innerHTML = '<div class="text-muted">Không hiển thị được nút đăng nhập Google.</div>';
+    }
   }
 };
